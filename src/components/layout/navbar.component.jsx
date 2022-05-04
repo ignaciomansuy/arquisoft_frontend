@@ -14,32 +14,54 @@ export default function Navbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ cursor: 'pointer' }}
-            onClick={() => navigate('/')}
-          >
-            F.R.I.E.N.D.S.
-          </Typography>
-          <Box>
-            {currentUser ? (
-              <>
-              <Button color="inherit" onClick={handleUserLogout}>
-                Cerrar sesión
-              </Button>
-              </>
-            ) : (
-              <>
-              <Button color="inherit" onClick={() => navigate('/session/login')}>
-                Iniciar sesión
-              </Button>
-              <Button color="inherit" onClick={() => navigate('/session/signup')}>
-                Registrarse
-              </Button>   
-              </>
-            )}
-          </Box>
+          {currentUser ? (
+            <>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ cursor: 'pointer' }}
+                onClick={() => navigate('/map/show')}
+              >
+                F.R.I.E.N.D.S.
+              </Typography>
+              <Box>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/map/show_ubications')}
+                >
+                  Ver mis ubicaciones
+                </Button>
+                <Button color="inherit" onClick={handleUserLogout}>
+                  Cerrar sesión
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ cursor: 'pointer' }}
+                onClick={() => navigate('/')}
+              >
+                F.R.I.E.N.D.S.
+              </Typography>
+              <Box>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/session/login')}
+                >
+                  Iniciar sesión
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/session/signup')}
+                >
+                  Registrarse
+                </Button>
+              </Box>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

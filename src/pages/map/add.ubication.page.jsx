@@ -1,46 +1,40 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import { Navigate } from 'react-router-dom';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { Link as RouterLink } from 'react-router-dom';
+import {Box, Button,Typography,TextField} from '@mui/material';
 import { Formik, Form } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import Hero from '../../components/layout/hero.component';
-import useAuth from '../../hooks/useAuth';
 import config from '../../config';
 
-
 const validationSchema = Yup.object({
-  username: Yup.string().required('Required'),
-  password: Yup.string()
-    .min(6, 'Your password must be at least 6 characters long')
-    .required('Required'),
+  name: Yup.string().required('Este campo es requerido'),
+  lat: Yup.string().required('Este campo es requerido'),
+  lng: Yup.string().required('Este campo es requerido'),
 });
 
-export default function SignInPage() {
-  const { currentUser, handleUserLogin } = useAuth();
+export default function AddUbicationPage() {
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
   return (
     <Hero navbar>
-      {currentUser && <Navigate to="/map/show" />}
-      <Breadcrumbs sx={{ my: 4 }}>
-        <Link color="inherit" to="/" component={RouterLink}>
-          Home
-        </Link>
-        <Typography color="text.primary">Iniciar sesión</Typography>
-      </Breadcrumbs>
-      <Typography variant="h3" component="h1" sx={{ color: 'primary.main' }}>
-        Iniciar sesión
+      <Typography
+        variant="h2"
+        component="h1"
+        textAlign="center"
+        sx={{ color: 'primary.main' }}
+      >
+        Agrega una ubicación al mapa
+      </Typography>
+      <Typography variant="h4" textAlign="center">
+        Te damos las coordenadas de donde hiciste doble click. O puedes editar y
+        poner otra de tu preferencia.
       </Typography>
       <Box sx={{ my: 2 }}>
         <Formik
           initialValues={{
-            username: '',
-            password: '',
+            name: '',
+            lat: '',
+            lng: '',
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
@@ -50,14 +44,16 @@ export default function SignInPage() {
               body: JSON.stringify(values),
             };
             try {
-              const response = await fetch(`${config.API_URL}/session/login`, requestOptions);
+              const response = await fetch(
+                `${config.API_URL}/map/add_ubication`,
+                requestOptions
+              );
               if (!response.ok) {
                 const error = await response.text();
                 throw new Error(error);
               }
-              const user = await response.json();
-              handleUserLogin(user);
-              setMessage('Ha iniciado sesión correctamente');
+              setMessage('Se ha guardado la ubicación correctamente.');
+              navigate('/map/show');
             } catch (error) {
               console.log(error);
               setMessage(error.message);
@@ -76,30 +72,43 @@ export default function SignInPage() {
               <TextField
                 sx={{ my: 1 }}
                 label="Nombre usuario"
-                name="username"
+                name="name"
                 size="large"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.username}
-                error={errors.username && touched.username}
+                value={values.name}
+                error={errors.name && touched.name}
                 helperText={
-                  errors.username && touched.username ? errors.username : null
+                  errors.name && touched.name ? errors.name : null
                 }
                 fullWidth
               />
               <TextField
                 sx={{ my: 1 }}
-                label="Contraseña"
-                name="password"
+                label="Latitud"
+                name="lat"
                 size="large"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.password}
-                error={errors.password && touched.password}
+                value={values.lat}
+                error={errors.lat && touched.lat}
                 helperText={
-                  errors.password && touched.password ? errors.password : null
+                  errors.lat && touched.lat ? errors.lat : null
                 }
-                type="password"
+                fullWidth
+              />
+              <TextField
+                sx={{ my: 1 }}
+                label="Longitud"
+                name="lng"
+                size="large"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lng}
+                error={errors.lng && touched.lng}
+                helperText={
+                  errors.lng && touched.lng ? errors.lng : null
+                }
                 fullWidth
               />
               <p className="Errors">{message}</p>
@@ -109,18 +118,12 @@ export default function SignInPage() {
                 size="large"
                 onClick={handleSubmit}
               >
-                Iniciar sesión{' '}
+                Agregar ubicación{' '}
               </Button>
             </Form>
           )}
         </Formik>
       </Box>
-      <Typography variant="body1">
-        No tienes cuenta?{' '}
-        <Link to="/sign-up" component={RouterLink}>
-          Registrarse{' '}
-        </Link>
-      </Typography>
     </Hero>
   );
 }
