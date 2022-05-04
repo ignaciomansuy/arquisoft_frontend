@@ -59,7 +59,7 @@ export default function SignInPage() {
               const user = await response.json();
               handleUserLogin(user);
               setMessage('El usuario se ha creado correctamente');
-              window.location.replace('/');
+              window.location.replace('/map/show');
             } catch (error) {
               console.log(error);
               setMessage(error.message);

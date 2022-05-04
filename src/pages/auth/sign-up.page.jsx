@@ -71,6 +71,7 @@ export default function SignUpPage() {
                 throw new Error(error);
               }
               setMessage('El usuario se ha creado correctamente');
+              window.location.replace('/map/show');
             } catch (error) {
               setMessage(error.message);
             }
