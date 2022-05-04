@@ -65,7 +65,7 @@ export default function SignUpPage() {
               body: JSON.stringify(values),
             };
             try {
-              const response = await fetch(`${config.API_URL}/session/signup`, requestOptions);
+              const response = await fetch(`${config.API_URL}/session/register`, requestOptions);
               if (!response.ok) {
                 const error = await response.text();
                 throw new Error(error);
