@@ -12,8 +12,7 @@ const Api = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: (result) =>
-        result ? [{ type: 'Example', id: 'LIST' }] : [],
+      invalidatesTags: (result) => (result ? [{ type: 'Example', id: 'LIST' }] : []),
     }),
   }),
   overrideExisting: false,
