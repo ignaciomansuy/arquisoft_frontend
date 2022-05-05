@@ -37,9 +37,7 @@ function LocationMarker() {
   const map = useMapEvents({
     dblclick(e) {
       setPosition(e.latlng);
-      navigate('/map/add_ubication', {
-        state: { position: position },
-      });
+      navigate('/map/add_ubication', { position });
       map.locate();
     },
   });

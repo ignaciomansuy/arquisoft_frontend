@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {Box, Button,Typography,TextField} from '@mui/material';
+// import PropTypes from 'prop-types';
+import { Box, Button, Typography, TextField } from '@mui/material';
 import { Formik, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -13,6 +14,9 @@ const validationSchema = Yup.object({
 });
 
 export default function AddUbicationPage() {
+  // const { position } = props;
+  console.log('position llegada');
+  console.log(position);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   return (
@@ -78,9 +82,7 @@ export default function AddUbicationPage() {
                 onBlur={handleBlur}
                 value={values.name}
                 error={errors.name && touched.name}
-                helperText={
-                  errors.name && touched.name ? errors.name : null
-                }
+                helperText={errors.name && touched.name ? errors.name : null}
                 fullWidth
               />
               <TextField
@@ -92,9 +94,7 @@ export default function AddUbicationPage() {
                 onBlur={handleBlur}
                 value={values.lat}
                 error={errors.lat && touched.lat}
-                helperText={
-                  errors.lat && touched.lat ? errors.lat : null
-                }
+                helperText={errors.lat && touched.lat ? errors.lat : null}
                 fullWidth
               />
               <TextField
@@ -106,9 +106,7 @@ export default function AddUbicationPage() {
                 onBlur={handleBlur}
                 value={values.lng}
                 error={errors.lng && touched.lng}
-                helperText={
-                  errors.lng && touched.lng ? errors.lng : null
-                }
+                helperText={errors.lng && touched.lng ? errors.lng : null}
                 fullWidth
               />
               <p className="Errors">{message}</p>
@@ -127,3 +125,7 @@ export default function AddUbicationPage() {
     </Hero>
   );
 }
+
+// AddUbicationPage.propTypes = {
+//   position: PropTypes.any,
+// };
