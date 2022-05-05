@@ -27,7 +27,7 @@ export default function ShowMapPage() {
       </Typography>
       <Typography variant="h6" textAlign="left">
         Para moverte por el mapa haz un click y mueve donde desees. Para hacer
-        zoom apreta rueda del mouse o apreta los íconos +/-.
+        zoom apreta ctr + la rueda del mouse, o apreta los íconos +/-.
       </Typography>
       <Box sx={{ my: 2 }}>
         <Map />
