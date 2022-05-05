@@ -11,6 +11,8 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Hero from '../../components/layout/hero.component';
 import useAuth from '../../hooks/useAuth';
+import config from '../../config';
+
 
 const validationSchema = Yup.object({
   username: Yup.string().required('Required'),
@@ -49,7 +51,7 @@ export default function SignInPage() {
               body: JSON.stringify(values),
             };
             try {
-              const response = await fetch(`/session/login`, requestOptions);
+              const response = await fetch(`${config.API_URL}/session/login`, requestOptions);
               if (!response.ok) {
                 const error = await response.text();
                 throw new Error(error);
@@ -57,6 +59,7 @@ export default function SignInPage() {
               const user = await response.json();
               handleUserLogin(user);
               setMessage('El usuario se ha creado correctamente');
+              window.location.replace('/map/show');
             } catch (error) {
               console.log(error);
               setMessage(error.message);

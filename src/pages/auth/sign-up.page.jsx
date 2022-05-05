@@ -13,6 +13,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Hero from '../../components/layout/hero.component';
+import config from '../../config';
+
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Required'),
@@ -63,12 +65,13 @@ export default function SignUpPage() {
               body: JSON.stringify(values),
             };
             try {
-              const response = await fetch(`/session/signup`, requestOptions);
+              const response = await fetch(`${config.API_URL}/session/register`, requestOptions);
               if (!response.ok) {
                 const error = await response.text();
                 throw new Error(error);
               }
               setMessage('El usuario se ha creado correctamente');
+              window.location.replace('/map/show');
             } catch (error) {
               setMessage(error.message);
             }
