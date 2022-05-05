@@ -10,4 +10,5 @@ Luego agregar lo siguiente al archivo `.env.local`
 ```
 PORT=8000
 REACT_APP_API_URL=http://localhost/api
+DISABLE_ESLINT_PLUGIN=true
 ```
