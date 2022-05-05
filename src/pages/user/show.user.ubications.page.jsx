@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Deserializer } from 'jsonapi-serializer';
 import { styled } from '@mui/material/styles';
 import {
   Paper,
@@ -12,6 +13,7 @@ import {
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
+import useAuth from '../../hooks/useAuth';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,30 +37,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function ShowUserUbicationsPage() {
   const [ubications, setUbications] = useState([]);
-
-//   useEffect(async () => {
-//     const requestOptions = {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     };
-//     try {
-//       const response = await fetch(
-//         `${config.API_URL}/map/show_ubications`,
-//         requestOptions
-//       );
-//       if (!response.ok) {
-//         const error = await response.text();
-//         throw new Error(error);
-//       }
-//       console.log("**************************");
-//       console.log(response);
-//       setUbications(response);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }, []);
+  const { currentUser } = useAuth();
 
 useEffect(() => {
     const requestOptions = {
@@ -67,7 +46,7 @@ useEffect(() => {
         'Content-Type': 'application/json',
       },
     };
-    fetch(`${config.API_URL}/map/show_ubications`, requestOptions)
+    fetch(`${config.API_URL}/map/show_ubications/${currentUser.data.id}`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           return [];
@@ -75,8 +54,7 @@ useEffect(() => {
         return response.json();
       })
       .then((data) => {
-        console.log(data)
-        setUbications(data);
+        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(data, (_error, ubications)=> setUbications(ubications));
       })
       .catch((error) =>  console.log(error));
   }, []);
@@ -105,12 +83,13 @@ useEffect(() => {
           </TableHead>
           <TableBody>
             {ubications.map((ubi) => (
-              <StyledTableRow key={ubi.name}>
+              console.log(ubi),
+              <StyledTableRow key={ubi.id}>
                 <StyledTableCell component="th" scope="row">
                   {ubi.name}
                 </StyledTableCell>
-                <StyledTableCell align="right">{ubi.lat_lng.coordinates[0]}</StyledTableCell>
-                <StyledTableCell align="right">{ubi.lat_lng.coordinates[1]}</StyledTableCell>
+                <StyledTableCell align="right">{ubi.latLng.coordinates[0]}</StyledTableCell>
+                <StyledTableCell align="right">{ubi.latLng.coordinates[1]}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

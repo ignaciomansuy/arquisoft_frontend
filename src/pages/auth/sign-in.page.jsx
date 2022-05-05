@@ -13,7 +13,6 @@ import Hero from '../../components/layout/hero.component';
 import useAuth from '../../hooks/useAuth';
 import config from '../../config';
 
-
 const validationSchema = Yup.object({
   username: Yup.string().required('Required'),
   password: Yup.string()
@@ -50,7 +49,10 @@ export default function SignInPage() {
               body: JSON.stringify(values),
             };
             try {
-              const response = await fetch(`${config.API_URL}/session/login`, requestOptions);
+              const response = await fetch(
+                `${config.API_URL}/session/login`,
+                requestOptions
+              );
               if (!response.ok) {
                 const error = await response.text();
                 throw new Error(error);

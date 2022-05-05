@@ -17,7 +17,6 @@ import useAuth from '../../hooks/useAuth';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
 
-
 const validationSchema = Yup.object({
   name: Yup.string().required('Required'),
   lastname: Yup.string().required('Required'),
@@ -48,7 +47,8 @@ export default function SignUpPage() {
         <Typography color="text.primary">Sign up</Typography>
       </Breadcrumbs>
       <Typography variant="h3" component="h1" sx={{ color: 'primary.main' }}>
-        Registrarse{' '}
+        Registrarse
+        {' '}
       </Typography>
       <Box sx={{ my: 2 }}>
         <Formik
@@ -69,7 +69,10 @@ export default function SignUpPage() {
               body: JSON.stringify(values),
             };
             try {
-              const response = await fetch(`${config.API_URL}/users/register`, requestOptions);
+              const response = await fetch(
+                `${config.API_URL}/users/register`,
+                requestOptions
+              );
               if (!response.ok) {
                 const error = await response.text();
                 throw new Error(error);
@@ -112,7 +115,9 @@ export default function SignUpPage() {
                 onBlur={handleBlur}
                 value={values.lastname}
                 error={errors.lastname && touched.lastname}
-                helperText={errors.lastname && touched.lastname ? errors.lastname : null}
+                helperText={
+                  errors.lastname && touched.lastname ? errors.lastname : null
+                }
                 fullWidth
               />
               <TextField
@@ -124,7 +129,9 @@ export default function SignUpPage() {
                 onBlur={handleBlur}
                 value={values.username}
                 error={errors.username && touched.username}
-                helperText={errors.username && touched.username ? errors.username : null}
+                helperText={
+                  errors.username && touched.username ? errors.username : null
+                }
                 fullWidth
               />
               <TextField

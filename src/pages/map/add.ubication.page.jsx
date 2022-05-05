@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
 import { Box, Button, Typography, TextField } from '@mui/material';
 import { Formik, Form } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
+import useAuth from '../../hooks/useAuth';
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Este campo es requerido'),
@@ -14,11 +14,11 @@ const validationSchema = Yup.object({
 });
 
 export default function AddUbicationPage() {
-  // const { position } = props;
-  console.log('position llegada');
-  console.log(position);
+  const location = useLocation();
+  const { currentUser } = useAuth();
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  console.log(currentUser.data.id);
   return (
     <Hero navbar>
       <Typography
@@ -37,11 +37,14 @@ export default function AddUbicationPage() {
         <Formik
           initialValues={{
             name: '',
-            lat: '',
-            lng: '',
+            lat: location.state.lat,
+            lng: location.state.lng,
+            id: currentUser.data.id,
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
+            console.log(values.name);
+            console.log(values.id);
             const requestOptions = {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -125,7 +128,3 @@ export default function AddUbicationPage() {
     </Hero>
   );
 }
-
-// AddUbicationPage.propTypes = {
-//   position: PropTypes.any,
-// };

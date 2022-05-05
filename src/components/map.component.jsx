@@ -12,41 +12,13 @@ import {
 
 function LocationMarker() {
   const navigate = useNavigate();
-  const [position, setPosition] = useState(null);
-  // useEffect(() => {
-  //   const requestOptions = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   };
-  //   fetch(`${config.API_URL}/map/add_ubication/lat_lng`, requestOptions)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         return [];
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //       setUbications(data);
-  //     })
-  //     .catch((error) => console.log(error));
-  // }, [position]);
 
   const map = useMapEvents({
     dblclick(e) {
-      setPosition(e.latlng);
-      navigate('/map/add_ubication', { position });
+      navigate('/map/add_ubication', { state: { lat: e.latlng.lat, lng: e.latlng.lng } });
       map.locate();
     },
   });
-
-  return position === null ? null : (
-    <Marker position={position}>
-      <Popup> Podría servir para ver el nombre de usuario marcador</Popup>
-    </Marker>
-  );
 }
 
 export default function Map() {
