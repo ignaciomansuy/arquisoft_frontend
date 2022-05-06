@@ -42,8 +42,6 @@ export default function AddUbicationPage() {
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
-            console.log(values.name);
-            console.log(values.id);
             const requestOptions = {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
