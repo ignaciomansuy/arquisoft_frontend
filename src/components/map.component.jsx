@@ -65,7 +65,6 @@ function LocationMarker() {
 
 export default function Map() {
   const initialPosition = [-33.4369, -70.6343];
-  
   return (
     <MapContainer
       center={initialPosition}

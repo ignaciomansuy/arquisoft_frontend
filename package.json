@@ -12,7 +12,10 @@
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
     "formik": "^2.2.9",
+<<<<<<< HEAD
     "jsonapi-serializer": "^3.6.7",
+=======
+>>>>>>> 31347ee5c59581eb168b3c0004149c3dde2c583c
     "leaflet": "^1.8.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
