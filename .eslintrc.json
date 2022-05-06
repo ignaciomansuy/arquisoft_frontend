@@ -14,9 +14,6 @@
         },
         "ecmaVersion": "latest"
     },
-    "plugins": [
-        "react"
-    ],
     "rules": {
     }
 }

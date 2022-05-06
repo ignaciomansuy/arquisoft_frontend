@@ -13,7 +13,6 @@ import Hero from '../../components/layout/hero.component';
 import useAuth from '../../hooks/useAuth';
 import config from '../../config';
 
-
 const validationSchema = Yup.object({
   username: Yup.string().required('Required'),
   password: Yup.string()
@@ -24,7 +23,6 @@ const validationSchema = Yup.object({
 export default function SignInPage() {
   const { currentUser, handleUserLogin } = useAuth();
   const [message, setMessage] = useState('');
-  console.log(currentUser);
   return (
     <Hero navbar>
       {currentUser && <Navigate to="/map/show" />}
@@ -51,15 +49,17 @@ export default function SignInPage() {
               body: JSON.stringify(values),
             };
             try {
-              const response = await fetch(`${config.API_URL}/session/login`, requestOptions);
+              const response = await fetch(
+                `${config.API_URL}/session/login`,
+                requestOptions
+              );
               if (!response.ok) {
                 const error = await response.text();
                 throw new Error(error);
               }
               const user = await response.json();
               handleUserLogin(user);
-              setMessage('El usuario se ha creado correctamente');
-              window.location.replace('/map/show');
+              setMessage('Ha iniciado sesión correctamente');
             } catch (error) {
               console.log(error);
               setMessage(error.message);
