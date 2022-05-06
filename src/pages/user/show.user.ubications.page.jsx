@@ -83,7 +83,6 @@ useEffect(() => {
           </TableHead>
           <TableBody>
             {ubications.map((ubi) => (
-              console.log(ubi),
               <StyledTableRow key={ubi.id}>
                 <StyledTableCell component="th" scope="row">
                   {ubi.name}

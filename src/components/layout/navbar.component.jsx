@@ -10,6 +10,10 @@ import useAuth from '../../hooks/useAuth';
 export default function Navbar() {
   const navigate = useNavigate();
   const { currentUser, handleUserLogout } = useAuth();
+  const logOut = () => {
+    handleUserLogout;
+    navigate('/map/show');
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -31,7 +35,7 @@ export default function Navbar() {
                 >
                   Ver mis ubicaciones
                 </Button>
-                <Button color="inherit" onClick={handleUserLogout}>
+                <Button color="inherit" onClick={() => logOut()}>
                   Cerrar sesión
                 </Button>
               </Box>
