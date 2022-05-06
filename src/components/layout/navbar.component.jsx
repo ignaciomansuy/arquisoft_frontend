@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { currentUser, handleUserLogout } = useAuth();
-  const logOut = () => {
-    handleUserLogout;
-    navigate('/map/show');
-  }
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/');
+    }
+  }, [currentUser]);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -35,7 +36,7 @@ export default function Navbar() {
                 >
                   Ver mis ubicaciones
                 </Button>
-                <Button color="inherit" onClick={() => logOut()}>
+                <Button color="inherit" onClick={handleUserLogout}>
                   Cerrar sesión
                 </Button>
               </Box>

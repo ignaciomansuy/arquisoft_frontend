@@ -18,7 +18,6 @@ export default function AddUbicationPage() {
   const { currentUser } = useAuth();
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  console.log(currentUser.data.id);
   return (
     <Hero navbar>
       <Typography
