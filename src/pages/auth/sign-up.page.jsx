@@ -16,6 +16,7 @@ import * as Yup from 'yup';
 import useAuth from '../../hooks/useAuth';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
+import UploadFile from '../../components/ui/upload.file';
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Required'),
@@ -57,6 +58,9 @@ export default function SignUpPage() {
             lastname: '',
             username: '',
             email: '',
+            files: {
+              foto_1: '',
+            },
             password: '',
             confirmPassword: '',
             acceptConditions: false,
@@ -92,6 +96,7 @@ export default function SignUpPage() {
             handleChange,
             handleBlur,
             handleSubmit,
+            setFieldValue
           }) => (
             <Form>
               <TextField
@@ -146,6 +151,7 @@ export default function SignUpPage() {
                 helperText={errors.email && touched.email ? errors.email : null}
                 fullWidth
               />
+              <UploadFile id={1} setFieldValue={setFieldValue}/>      
               <TextField
                 sx={{ my: 1 }}
                 label="Contraseña"
