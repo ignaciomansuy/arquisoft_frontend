@@ -58,9 +58,7 @@ export default function SignUpPage() {
             lastname: '',
             username: '',
             email: '',
-            files: {
-              foto_1: '',
-            },
+            foto_1: null,
             password: '',
             confirmPassword: '',
             acceptConditions: false,
@@ -82,6 +80,7 @@ export default function SignUpPage() {
                 throw new Error(error);
               }
               const user = await response.json();
+              
               handleUserLogin(user);
               setMessage('El usuario se ha creado correctamente');
             } catch (error) {
@@ -98,7 +97,7 @@ export default function SignUpPage() {
             handleSubmit,
             setFieldValue
           }) => (
-            <Form>
+            <Form encType="multipart/form-data">
               <TextField
                 sx={{ my: 1 }}
                 label="Nombre"
