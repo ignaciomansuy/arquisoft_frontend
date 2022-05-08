@@ -21,14 +21,26 @@ export default function Navbar() {
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           {currentUser ? (
             <>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ cursor: 'pointer' }}
-                onClick={() => navigate('/map/show')}
-              >
-                F.R.I.E.N.D.S.
-              </Typography>
+              <Box>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/map/show')}
+                >
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    F.R.I.E.N.D.S.
+                  </Typography>
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/users/list')}
+                >
+                  Lista de usuarios
+                </Button>
+              </Box>
               <Box>
                 <Button
                   color="inherit"
