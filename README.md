@@ -6,7 +6,7 @@ Correr el siguiente comando en la terminal adentro del directorio del proyecto p
 ```
 touch .env
 ```
-Luego agregar lo siguiente al archivo `.env` y poner la key ID y secret key de tu AWS S3 bucket
+Luego agregar lo siguiente al archivo `.env`, junto con poner la key ID, secret key y bucket name de tu AWS S3 bucket
 ```
 PORT=8000
 REACT_APP_API_URL=http://localhost/api
