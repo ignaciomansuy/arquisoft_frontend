@@ -11,6 +11,7 @@ const SignUpPage = lazy(() => import('./pages/auth/sign-up.page'));
 const ShowMapPage = lazy(() => import('./pages/map/show.page'));
 const AddUbicationPage = lazy(() => import('./pages/map/add.ubication.page'));
 const ShowUserUbicationsPage = lazy(() => import('./pages/user/show.user.ubications.page'));
+const UserList = lazy(() => import('./pages/users/UserList'));
 
 export default function Router() {
   return (
@@ -25,6 +26,7 @@ export default function Router() {
             <Route path="/map/show" element={<ShowMapPage />} />
             <Route path="/map/add_ubication" element={<AddUbicationPage />} />
             <Route path="/map/show_ubications" element={<ShowUserUbicationsPage />} />
+            <Route path="/users/list" element={<UserList />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
