@@ -22,7 +22,7 @@ export default function Router() {
             <Route path="/session/signup" element={<SignUpPage />} />
             <Route path="/session/login" element={<SignInPage />} />
             <Route path="/map/show" element={<ShowMapPage />} />
-            <Route path='/users/UserList'></Route>
+            <Route path="/users/list" element={<UserList />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

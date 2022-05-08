@@ -3,24 +3,30 @@ import { Link } from 'react-router-dom';
 import { Deserializer } from 'jsonapi-serializer';
 import config from '../../config';
 import useAuth from '../../hooks/useAuth';
+import { DataGrid } from '@mui/x-data-grid'; 
 
 const UserList = () => {
-  const { currentUser } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    var requestOptions = {
+      method: 'GET',
+    };
+    
     setLoading(true);
-    fetch(`${config.API_URL}/users`)
+    fetch(`${config.API_URL}/users/list`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           setError(true);
           return [];
+          
         }
         return response.json();
       })
-      .then((data) => new Deserializer({keyForAttribute: 'camelCase'}).deserialize(data, (_error, userList) => setUsers(userList)))
+      .then((data) => {new Deserializer({keyForAttribute: 'camelCase'}).deserialize(data, (_error, userList) => setUsers(userList));
+      console.log(data)})
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, []);
@@ -34,28 +40,36 @@ const UserList = () => {
       </section>
     );
   }
+  
+  let columns = [{
+    field: 'name',
+    headerName: 'Nombre',
+    width: 250,
+    editable: false,
+  },
+  {
+      field: 'username',
+      headerName: 'Nombre de Usuario',
+      width: 300,
+      editable: false,
 
+  }]
   return (
     <section>
       <Link to='/'>Home</Link>
-      {error ? (
-        <h2>Error</h2>
-      ) : (
-        <>
-          <h2>Users</h2>
-          {users.map(({id, name, username}) => (
-           <table>
-            <tr>
-              <th>Name</th>
-              <th>Username</th>
-            </tr>
-            <div>
-            </div>
-          </table>
-          ))}
-        </>
-      )
-      }
+    <center>
+    
+    <div style={{ height: 400, width: '25%' }}>
+      <DataGrid
+        rows={users}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        disableSelectionOnClick
+        />
+    </div>
+        </center>
+      
     </section>
   );
 };
