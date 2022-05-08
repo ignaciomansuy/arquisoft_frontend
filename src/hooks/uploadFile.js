@@ -16,14 +16,14 @@ const s3 = new AWS.S3({
 });
 
 const uploadFilesFunction = (user_id) => {
-    var files = document.querySelector('input[type=file]').files;
-    console.log(files);
+    var files = document.getElementsByClassName('fotos_file');
+    var readers = [];
     for (let i = 0; i < files.length; i++) {
-      var file = files[i];
+      var file = files[i].files[0];
       var reader  = new FileReader();
-      console.log(i);
+      readers.push(reader);
       reader.onloadend = function () {
-        const fileContent = reader.result;
+        const fileContent = readers[i].result;
         // setting up s3 upload parameters
         const params = {
           Bucket: BUCKET_NAME,
@@ -48,7 +48,6 @@ const uploadFilesFunction = (user_id) => {
       else {
         console.log("no files detected");
       }
-      i += 1;
     };
 };
 

@@ -9,9 +9,11 @@ export default function UploadFile(props) {
         type="file"
         id={identifier}
         name={identifier}
+        className="fotos_file"
         onChange={(event) => {
           props.setFieldValue(`${identifier}`, "gud");
         }}
+        accept=".jpg,.jpeg,.png,.jfif"
       />
     </div>
   );

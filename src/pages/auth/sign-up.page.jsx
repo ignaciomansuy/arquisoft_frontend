@@ -25,6 +25,8 @@ const validationSchema = Yup.object({
   username: Yup.string().required('Required'),
   email: Yup.string().email('Debe ser un mail válido').required('Required'),
   foto_1: Yup.string().required('Requiered'),
+  foto_2: Yup.string().required('Requiered'),
+  foto_3: Yup.string().required('Requiered'),
   password: Yup.string()
     .min(6, 'La contraseña debe tener mínimo 6 caracteres.')
     .required('Required'),
@@ -61,6 +63,8 @@ export default function SignUpPage() {
             username: '',
             email: '',
             foto_1: '',
+            foto_2: '',
+            foto_3: '',
             password: '',
             confirmPassword: '',
             acceptConditions: false,
@@ -153,6 +157,9 @@ export default function SignUpPage() {
                 fullWidth
               />
               <UploadFile id={1} setFieldValue={setFieldValue}/>      
+              <UploadFile id={2} setFieldValue={setFieldValue}/>      
+              <UploadFile id={3} setFieldValue={setFieldValue}/>
+              <Typography variant="body2">Tienes que subir 3 fotos para poder registrarte</Typography>      
               <TextField
                 sx={{ my: 1 }}
                 label="Contraseña"
