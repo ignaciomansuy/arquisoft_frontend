@@ -16,12 +16,18 @@ import * as Yup from 'yup';
 import useAuth from '../../hooks/useAuth';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
+import UploadFile from '../../components/ui/upload.file';
+import uploadFilesFunction from '../../hooks/uploadFile';
+import sendImagesUrl from '../../hooks/sendImagesUrl';
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Required'),
   lastname: Yup.string().required('Required'),
   username: Yup.string().required('Required'),
   email: Yup.string().email('Debe ser un mail válido').required('Required'),
+  foto_1: Yup.string().required('Requiered'),
+  foto_2: Yup.string().required('Requiered'),
+  foto_3: Yup.string().required('Requiered'),
   password: Yup.string()
     .min(6, 'La contraseña debe tener mínimo 6 caracteres.')
     .required('Required'),
@@ -57,6 +63,9 @@ export default function SignUpPage() {
             lastname: '',
             username: '',
             email: '',
+            foto_1: '',
+            foto_2: '',
+            foto_3: '',
             password: '',
             confirmPassword: '',
             acceptConditions: false,
@@ -78,6 +87,8 @@ export default function SignUpPage() {
                 throw new Error(error);
               }
               const user = await response.json();
+              var urls = await uploadFilesFunction(user.data.id);
+              sendImagesUrl(urls, user.data.id, setMessage);
               handleUserLogin(user);
               setMessage('El usuario se ha creado correctamente');
             } catch (error) {
@@ -92,8 +103,9 @@ export default function SignUpPage() {
             handleChange,
             handleBlur,
             handleSubmit,
+            setFieldValue
           }) => (
-            <Form>
+            <Form encType="multipart/form-data">
               <TextField
                 sx={{ my: 1 }}
                 label="Nombre"
@@ -146,6 +158,10 @@ export default function SignUpPage() {
                 helperText={errors.email && touched.email ? errors.email : null}
                 fullWidth
               />
+              <UploadFile id={1} setFieldValue={setFieldValue}/>      
+              <UploadFile id={2} setFieldValue={setFieldValue}/>      
+              <UploadFile id={3} setFieldValue={setFieldValue}/>
+              <Typography variant="body2">Tienes que subir 3 fotos para poder registrarte</Typography>      
               <TextField
                 sx={{ my: 1 }}
                 label="Contraseña"
