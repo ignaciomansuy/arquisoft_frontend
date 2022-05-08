@@ -17,12 +17,14 @@ import useAuth from '../../hooks/useAuth';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
 import UploadFile from '../../components/ui/upload.file';
+import uploadFilesFunction from '../../hooks/uploadFile';
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Required'),
   lastname: Yup.string().required('Required'),
   username: Yup.string().required('Required'),
   email: Yup.string().email('Debe ser un mail válido').required('Required'),
+  foto_1: Yup.string().required('Requiered'),
   password: Yup.string()
     .min(6, 'La contraseña debe tener mínimo 6 caracteres.')
     .required('Required'),
@@ -58,7 +60,7 @@ export default function SignUpPage() {
             lastname: '',
             username: '',
             email: '',
-            foto_1: null,
+            foto_1: '',
             password: '',
             confirmPassword: '',
             acceptConditions: false,
@@ -80,7 +82,7 @@ export default function SignUpPage() {
                 throw new Error(error);
               }
               const user = await response.json();
-              
+              uploadFilesFunction(user.data.id);
               handleUserLogin(user);
               setMessage('El usuario se ha creado correctamente');
             } catch (error) {
