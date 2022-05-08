@@ -18,6 +18,7 @@ import Hero from '../../components/layout/hero.component';
 import config from '../../config';
 import UploadFile from '../../components/ui/upload.file';
 import uploadFilesFunction from '../../hooks/uploadFile';
+import sendImagesUrl from '../../hooks/sendImagesUrl';
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Required'),
@@ -86,7 +87,8 @@ export default function SignUpPage() {
                 throw new Error(error);
               }
               const user = await response.json();
-              uploadFilesFunction(user.data.id);
+              var urls = await uploadFilesFunction(user.data.id);
+              sendImagesUrl(urls, user.data.id);
               handleUserLogin(user);
               setMessage('El usuario se ha creado correctamente');
             } catch (error) {

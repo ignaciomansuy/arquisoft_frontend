@@ -15,10 +15,12 @@ const s3 = new AWS.S3({
     secretAccessKey: secret
 });
 
-const uploadFilesFunction = (user_id) => {
-    var files = document.getElementsByClassName('fotos_file');
-    var readers = [];
-    for (let i = 0; i < files.length; i++) {
+const uploadFilesFunction = async (user_id) => {
+  var files = document.getElementsByClassName('fotos_file');
+  var readers = [];
+  let urls = [];
+  for (let i = 0; i < files.length; i++) {
+    var result = await new Promise((resolve) => {
       var file = files[i].files[0];
       var reader  = new FileReader();
       readers.push(reader);
@@ -33,11 +35,11 @@ const uploadFilesFunction = (user_id) => {
         };
 
         // Uploading files to the bucket
-        s3.upload(params, function(err, data) {
+         s3.upload(params, function(err, data) {
           if (err) {
             throw err
           }
-          console.log(`File uploaded successfully. ${data.Location}`)
+          resolve(data.Location);
         });
       }
       // read content from the file
@@ -48,7 +50,10 @@ const uploadFilesFunction = (user_id) => {
       else {
         console.log("no files detected");
       }
-    };
+    })
+    urls.push(result);
+  };
+  return urls;
 };
 
 export default uploadFilesFunction;
