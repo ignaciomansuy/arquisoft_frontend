@@ -88,7 +88,7 @@ export default function SignUpPage() {
               }
               const user = await response.json();
               var urls = await uploadFilesFunction(user.data.id);
-              sendImagesUrl(urls, user.data.id);
+              sendImagesUrl(urls, user.data.id, setMessage);
               handleUserLogin(user);
               setMessage('El usuario se ha creado correctamente');
             } catch (error) {
