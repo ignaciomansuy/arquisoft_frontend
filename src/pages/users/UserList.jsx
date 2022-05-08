@@ -25,8 +25,7 @@ const UserList = () => {
         }
         return response.json();
       })
-      .then((data) => {new Deserializer({keyForAttribute: 'camelCase'}).deserialize(data, (_error, userList) => setUsers(userList));
-      console.log(data)})
+      .then((data) => {new Deserializer({keyForAttribute: 'camelCase'}).deserialize(data, (_error, userList) => setUsers(userList))})
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, []);
@@ -56,19 +55,17 @@ const UserList = () => {
   }]
   return (
     <section>
-      <Link to='/'>Home</Link>
-    <center>
-    
-    <div style={{ height: 400, width: '25%' }}>
-      <DataGrid
-        rows={users}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        disableSelectionOnClick
-        />
-    </div>
-        </center>
+      <center>
+        <div style={{ height: 400, width: '70%' }}>
+          <DataGrid
+            rows={users}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            disableSelectionOnClick
+            />
+        </div>
+      </center>
       
     </section>
   );

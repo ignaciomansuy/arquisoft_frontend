@@ -34,7 +34,6 @@ export default function Navbar() {
                     F.R.I.E.N.D.S.
                   </Typography>
                 </Button>
-                
                 <Button
                   color="inherit"
                   onClick={() => navigate('/users/list')}
