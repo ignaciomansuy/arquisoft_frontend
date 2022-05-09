@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Component } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Container } from '@mui/material';
 import config from '../../config';
 import { Deserializer } from 'jsonapi-serializer';
 import Hero from '../../components/layout/hero.component';
-import Map from '../../components/map.component';
+import UserMap from '../../components/user.map.component';
 
 export default function CompareMapPage() {
     const animatedComponents = makeAnimated();
@@ -48,46 +48,47 @@ useEffect(() => {
 
     return (
       <Hero navbar>
-        <Box sx={{ my: 2 }}>
-        <Select
-        isMulti
-        placeholder="Select Option"
-        value={selectedOption} // set selected value
-        //options={Users} // set list of the data
-        options={selectedOption.length === maxOptions ? [] : Users}
-        noOptionsMessage={() => {
-        return selectedOption.length === maxOptions ? 'You have reached the max options value' : 'No options available' ;
-        }}
-        onChange={handleChange} // assign onChange function
-        selectionLimit="5"
-        components={animatedComponents}
-        />
-        </Box>
         <Typography
           variant="h2"
           component="h1"
           textAlign="center"
           sx={{ color: 'primary.main' }}
         >
-          Hola a F.R.I.E.N.D.S.
+          Bienvenido a F.R.I.E.N.D.S.
         </Typography>
         <Typography variant="h4" textAlign="center">
-          Navega por el mapa para encontrar nuevos amigos :)
+          Selecciona usuarios para ver sus ubicaciones
         </Typography>
-        <Typography variant="h6" textAlign="left">
-          En este mapa puedes agregar nuevas ubicaciones y a la vez puedes ver
-          todas las ubicaciones de otros usuarios (y también las tuyas).
+        
+        <Box sx={{ my: 2 }} >
+        <Select
+        styles={{
+            // Fixes the overlapping problem of the component
+            menu: provided => ({ ...provided, zIndex: 9999 })
+          }}
+        isMulti
+        placeholder="Selección de usuarios"
+        value={selectedOption} // set selected value
+        options={selectedOption.length === maxOptions ? [] : Users}
+        noOptionsMessage={() => {
+        return selectedOption.length === maxOptions ? 'No se pueden elegir más usuarios' : 'No hay más usuarios' ;
+        }} // set list of the data
+        onChange={handleChange} // assign onChange function
+        components={animatedComponents}
+        />
+        </Box>
+
+        <Typography variant="h4" textAlign="left">
+          En estos mapas verás las ubicaciones de los usuarios seleccionados.
         </Typography>
-        <Typography variant="h6" textAlign="left">
-          Para agregar una ubicación haz doble click en el lugar que deseas
-          agregarla.
-        </Typography>
-        <Typography variant="h6" textAlign="left">
-          Para moverte por el mapa haz un click y mueve donde desees. Para hacer
-          zoom apreta ctr + la rueda del mouse, o apreta los íconos +/-.
-        </Typography>
+
         <Box sx={{ my: 2 }}>
-          <Map />
+            {selectedOption.map((value) =>
+            <Typography variant="h6" textAlign="left">
+            <div>Mapa del usuario {value.label}</div>
+            <div><UserMap value={value.value} /></div>
+            </Typography>
+            )}
         </Box>
       </Hero>
     );
