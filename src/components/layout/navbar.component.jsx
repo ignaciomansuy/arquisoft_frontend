@@ -48,6 +48,12 @@ export default function Navbar() {
                 >
                   Ver mis ubicaciones
                 </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/map/compare')}
+                >
+                  Comparar
+                </Button>
                 <Button color="inherit" onClick={handleUserLogout}>
                   Cerrar sesión
                 </Button>
