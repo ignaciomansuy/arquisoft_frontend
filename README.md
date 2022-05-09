@@ -22,3 +22,5 @@ REACT_APP_AWS_S3_BUCKET_NAME=<aws_s3_bucket_name>
 
 Finalmente, correr la aplicación:
 ``` npm start ```
+
+Para ver la aplicación dirígete a:  http://localhost:8000
