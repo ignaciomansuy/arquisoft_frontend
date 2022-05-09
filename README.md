@@ -24,3 +24,6 @@ Finalmente, correr la aplicación:
 ``` npm start ```
 
 Para ver la aplicación dirígete a:  http://localhost:8000
+
+## Para ver la aplicación en producción
+Dirigirse a http://frontend-friends-app.s3-website-us-east-1.amazonaws.com/
