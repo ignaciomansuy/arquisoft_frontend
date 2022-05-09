@@ -33,9 +33,7 @@ useEffect(() => {
   }, []);
 
     let Users = [];
-    console.log(users);
     users.forEach((user) => Users.push({value: user.id, label: user.username}));
-    console.log(Users);
 
     const [selectedOption, setSelectedOption] = useState([]);
     const maxOptions = 5;
@@ -43,7 +41,6 @@ useEffect(() => {
     // handle onChange event of the dropdown
     const handleChange = e => {
       setSelectedOption(e);
-      console.log(e);
     }
 
     return (

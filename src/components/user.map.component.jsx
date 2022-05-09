@@ -21,7 +21,6 @@ L.Icon.Default.mergeOptions({
 });
 
 function UserLocationMarker(userId) {
-  console.log(userId.value);
   const [ubications, setUbications] = useState([]);
 
   useEffect(() => {
@@ -46,7 +45,6 @@ function UserLocationMarker(userId) {
       })
       .catch((error) => console.log(error));
   }, []);
-  console.log(ubications);
   return ubications.map((ubi) => (
       <Marker key={ubi.id} position={ubi.latLng.coordinates}>
         <Popup>
