@@ -41,12 +41,25 @@ export default function Navbar() {
                   Lista de usuarios
                 </Button>
               </Box>
+              {/* aqui van los pings nuevitos */}
               <Box>
                 <Button
                   color="inherit"
                   onClick={() => navigate('/map/show_ubications')}
                 >
                   Ver mis ubicaciones
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/pings/show_sent')}
+                >
+                  pings enviados
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/pings/show_received')}
+                >
+                  pings recibidos
                 </Button>
                 <Button color="inherit" onClick={handleUserLogout}>
                   Cerrar sesión
