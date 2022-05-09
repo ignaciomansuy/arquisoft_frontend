@@ -60,7 +60,7 @@ useEffect(() => {
           Selecciona usuarios para ver sus ubicaciones
         </Typography>
         
-        <Box sx={{ my: 2 }} >
+        <Container sx={{ my: 2 }} >
         <Select
         styles={{
             // Fixes the overlapping problem of the component
@@ -76,7 +76,7 @@ useEffect(() => {
         onChange={handleChange} // assign onChange function
         components={animatedComponents}
         />
-        </Box>
+        </Container>
 
         <Typography variant="h4" textAlign="left">
           En estos mapas verás las ubicaciones de los usuarios seleccionados.
