@@ -11,11 +11,8 @@ const SignUpPage = lazy(() => import('./pages/auth/sign-up.page'));
 const ShowMapPage = lazy(() => import('./pages/map/show.page'));
 const AddUbicationPage = lazy(() => import('./pages/map/add.ubication.page'));
 const ShowUserUbicationsPage = lazy(() => import('./pages/user/show.user.ubications.page'));
-<<<<<<< HEAD
 const UserList = lazy(() => import('./pages/users/UserList'));
-=======
 const CompareMapPage = lazy(() => import('./pages/compare/compare.page'));
->>>>>>> 93a17d6c185268887648d1ec58acd18b319321cf
 
 export default function Router() {
   return (
