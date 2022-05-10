@@ -70,6 +70,9 @@ export default function Navbar() {
                   onClick={() => navigate('/pings/show_send')}
                 >
                   pings enviados
+                </Button>
+                <Button
+                  color="inherit"
                   onClick={() => navigate('/map/compare')}
                 >
                   Comparar
