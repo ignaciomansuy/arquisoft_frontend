@@ -51,15 +51,21 @@ export default function Navbar() {
                 </Button>
                 <Button
                   color="inherit"
-                  onClick={() => navigate('/pings/show_sent')}
+                  onClick={() => navigate('/pings/send')}
                 >
-                  pings enviados
+                  Enviar Ping
                 </Button>
                 <Button
                   color="inherit"
                   onClick={() => navigate('/pings/show_received')}
                 >
                   pings recibidos
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/pings/show_send')}
+                >
+                  pings enviados
                 </Button>
                 <Button color="inherit" onClick={handleUserLogout}>
                   Cerrar sesión

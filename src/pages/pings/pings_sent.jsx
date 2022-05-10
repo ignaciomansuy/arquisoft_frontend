@@ -1,97 +1,108 @@
-import React, { useState } from 'react';
-import { Box, Button, Typography, TextField } from '@mui/material';
-import { Formik, Form } from 'formik';
-import { useNavigate, useLocation } from 'react-router-dom';
-import * as Yup from 'yup';
-import Hero from '../../components/layout/hero.component';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Deserializer } from 'jsonapi-serializer';
 import config from '../../config';
 import useAuth from '../../hooks/useAuth';
+import { DataGrid } from '@mui/x-data-grid'; 
 
-const validationSchema = Yup.object({
-  name: Yup.string().required('Este campo es requerido'),
-  lat: Yup.string().required('Este campo es requerido'),
-  lng: Yup.string().required('Este campo es requerido'),
-});
-
-export default function AddPingPage() {
-  const [pings_received, setPings_received] = useState([]);
+export default function sendPings() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const { currentUser } = useAuth();
+
+  useEffect(() => {
+    var requestOptions = {
+      method: 'GET',
+    };
+    
+    setLoading(true);
+    fetch(`${config.API_URL}/users/list`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          setError(true);
+          return [];
+          
+        }
+        return response.json();
+      })
+      .then((data) => {new Deserializer({keyForAttribute: 'camelCase'}).deserialize(data, (_error, userList) => setUsers(userList))})
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  }, []);
+
+  function makePing(receiver_id) {
+    setLoading(true);
+    const info = {
+      "sender_user_id": currentUser.data.id,
+      "receiver_user_id": receiver_id
+    }
+    console.log(info)
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(info),
+    };
+    fetch(`${config.API_URL}/pings/create`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          setMessage(response);
+          setError(true);
+          return [];
+        }
+        window.location.reload(false);
+        return [];
+      })
+      .catch((catchedError) => {
+        setMessage(catchedError);
+        setError(true);
+      })
+      .finally(() => setLoading(false));
+  }
+
+  const addUser = (user) => setUsers((prevState) => [...prevState, user]);
+
+  if (loading) {
+    return (
+      <section className='container'>
+        <h2>Loading...</h2>
+      </section>
+    );
+  }
+  
   return (
-    <Hero navbar>
-      <Typography
-        variant="h2"
-        component="h1"
-        textAlign="center"
-        sx={{ color: 'primary.main' }}
-      >
-        Manda un ping a un amigo
-      </Typography>
-      <Typography variant="h4" textAlign="center">
-        Escribe el id de a quien se los vas a mandar
-      </Typography>
-      <Box sx={{ my: 2 }}>
-        <Formik
-          initialValues={{
-            id: currentUser.data.id,
-          }}
-          validationSchema={validationSchema}
-          onSubmit={async (values) => {
-            const requestOptions = {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(values),
-            };
-            try {
-              const response = await fetch(
-                `${config.API_URL}/pings/create`,
-                requestOptions
-              );
-              if (!response.ok) {
-                const error = await response.text();
-                throw new Error(error);
-              }
-              setMessage('Se ha guardado el ping correctamente.');
-              navigate('/');
-            } catch (error) {
-              console.log(error);
-              setMessage(error.message);
-            }
-          }}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-          }) => (
-            <Form>
-              <TextField
-                sx={{ my: 1 }}
-                label="id"
-                name="id"
-                size="large"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.id}
-                error={errors.lng && touched.lng}
-                helperText={errors.lng && touched.lng ? errors.lng : null}
-                fullWidth
-              />
-              <p className="Errors">{message}</p>
-              <Button
-                sx={{ my: 1 }}
-                variant="contained"
-                size="large"
-                onClick={handleSubmit}
-              >
-                Mandar Ping{' '}
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </Box>
-    </Hero>
+    <div className="container box">
+      {
+        error ? (
+          <ErrorTitle error={message} />
+        ) : (
+          <div className="block has-text-centered">
+            <h2 className="title is-2">Send ping list</h2>
+            <table className="table container">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Send ping</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={`${user?.id}`}>
+                    <td>
+                      {`${user?.name}`}
+                    </td>
+                    <td>
+                      <button type="button" onClick={() => makePing(user.id)} className="button is-primary is-small">Send ping</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      }
+    </div>
   );
-}
+};

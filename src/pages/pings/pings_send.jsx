@@ -35,8 +35,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function PingsReceived() {
-  const [pings_received, setPings_received] = useState([]);
+export default function pingsSend() {
+  const [pings_send, setPings_send] = useState([]);
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function PingsReceived() {
         'Content-Type': 'application/json',
       },
     };
-    fetch(`${config.API_URL}/pings/received_by/${currentUser.data.id}`, requestOptions)
+    fetch(`${config.API_URL}/pings/sended_by/${currentUser.data.id}`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           return [];
@@ -54,7 +54,7 @@ export default function PingsReceived() {
         return response.json();
       })
       .then((data) => {
-        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(data, (_error, pings_received) => setPings_received(pings_received));
+        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(data, (_error, pings_send) => setPings_send(pings_send));
       })
       .catch((error) => console.log(error));
   }, []);
@@ -67,10 +67,10 @@ export default function PingsReceived() {
         textAlign="center"
         sx={{ color: 'primary.main' }}
       >
-        Tus pings recibidos
+        Tus pings enviados
       </Typography>
       <Typography variant="h6" textAlign="left">
-        Aquí puedes encontrar los pings que te han enviado
+        Aquí puedes encontrar los pings que haz enviado
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -81,7 +81,7 @@ export default function PingsReceived() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {pings_received.map((ping) => (
+            {pings_send.map((ping) => (
               <StyledTableRow key={ping.id}>
                 <StyledTableCell component="th" scope="row">
                   {ping.senderUserId}
