@@ -36,17 +36,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function ShowUserUbicationsPage() {
-  const [ubications, setUbications] = useState([]);
+  const [pings_received, setPings_received] = useState([]);
   const { currentUser } = useAuth();
 
-useEffect(() => {
+  useEffect(() => {
     const requestOptions = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     };
-    fetch(`${config.API_URL}/map/show_ubications/${currentUser.data.id}`, requestOptions)
+    fetch(`${config.API_URL}/pings/${currentUser.data.id}/list`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           return [];
@@ -54,9 +54,9 @@ useEffect(() => {
         return response.json();
       })
       .then((data) => {
-        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(data, (_error, ubications)=> setUbications(ubications));
+        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(data, (_error, pings_received) => setPings_received(pings_received));
       })
-      .catch((error) =>  console.log(error));
+      .catch((error) => console.log(error));
   }, []);
 
   return (
@@ -67,28 +67,26 @@ useEffect(() => {
         textAlign="center"
         sx={{ color: 'primary.main' }}
       >
-        Tus ubicaciones guardadas
+        Tus pings recibidos
       </Typography>
       <Typography variant="h6" textAlign="left">
-        Aquí puedes encontrar las ubicaciones que haz guardado.
+        Aquí puedes encontrar los pings que te han enviado
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Nombre</StyledTableCell>
-              <StyledTableCell align="right">Latitud</StyledTableCell>
-              <StyledTableCell align="right">Longitud</StyledTableCell>
+              <StyledTableCell>Nombre de quien manda</StyledTableCell>
+              <StyledTableCell align="right">fecha</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {ubications.map((ubi) => (
-              <StyledTableRow key={ubi.id}>
+            {pings_received.map((ping) => (
+              <StyledTableRow key={ping.id}>
                 <StyledTableCell component="th" scope="row">
-                  {ubi.name}
+                  {ping.sender_user_id}
                 </StyledTableCell>
-                <StyledTableCell align="right">{ubi.latLng.coordinates[0]}</StyledTableCell>
-                <StyledTableCell align="right">{ubi.latLng.coordinates[1]}</StyledTableCell>
+                <StyledTableCell align="right">{ping.createdAt}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

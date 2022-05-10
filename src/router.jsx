@@ -10,8 +10,8 @@ const SignInPage = lazy(() => import('./pages/auth/sign-in.page'));
 const SignUpPage = lazy(() => import('./pages/auth/sign-up.page'));
 const ShowMapPage = lazy(() => import('./pages/map/show.page'));
 const AddUbicationPage = lazy(() => import('./pages/map/add.ubication.page'));
-const ShowPingsSentPage = lazy(() => import('./pages/user/show.user.pings_sent.page'));
-const ShowPingsReceivedPage = lazy(() => import('./pages/user/show.user.pings_received.page'));
+const ShowPingsSentPage = lazy(() => import('./pages/pings/pings_sent'));
+const ShowPingsReceivedPage = lazy(() => import('./pages/pings/pings_received'));
 const ShowUserUbicationsPage = lazy(() => import('./pages/user/show.user.ubications.page'));
 
 const UserList = lazy(() => import('./pages/users/UserList'));
@@ -29,8 +29,8 @@ export default function Router() {
             <Route path="/map/show" element={<ShowMapPage />} />
             <Route path="/map/add_ubication" element={<AddUbicationPage />} />
             <Route path="/map/show_ubications" element={<ShowUserUbicationsPage />} />
-            <Route path="/user/show_sent" element={<ShowPingsSentPage />} />
-            <Route path="/user/show_received" element={<ShowPingsReceivedPage />} />
+            <Route path="/pings/show_sent" element={<ShowPingsSentPage />} />
+            <Route path="/pings/show_received" element={<ShowPingsReceivedPage />} />
             <Route path="/users/list" element={<UserList />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
