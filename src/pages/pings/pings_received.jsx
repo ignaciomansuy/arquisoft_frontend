@@ -76,17 +76,17 @@ export default function ShowUserUbicationsPage() {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Nombre de quien manda</StyledTableCell>
-              <StyledTableCell align="right">fecha</StyledTableCell>
+              <StyledTableCell>id de quien manda</StyledTableCell>
+              <StyledTableCell align="right">id de quien recibe</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {pings_received.map((ping) => (
               <StyledTableRow key={ping.id}>
                 <StyledTableCell component="th" scope="row">
-                  {ping.sender_user_id}
+                  {ping.senderUserId}
                 </StyledTableCell>
-                <StyledTableCell align="right">{ping.createdAt}</StyledTableCell>
+                <StyledTableCell align="right">{ping.receiverUserId}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
