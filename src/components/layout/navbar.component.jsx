@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate, Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import CovidStats from '../covi.api.component';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -40,6 +41,9 @@ export default function Navbar() {
                 >
                   Lista de usuarios
                 </Button>
+              </Box>
+              <Box>
+                <CovidStats />
               </Box>
               <Box>
                 <Button
