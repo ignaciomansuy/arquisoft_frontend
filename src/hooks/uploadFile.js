@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+/* eslint-disable import/no-unresolved */
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 
 import AWS from 'aws-sdk';
