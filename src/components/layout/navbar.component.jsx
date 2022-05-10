@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate, Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import CovidStats from '../covi.api.component';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -43,6 +44,9 @@ export default function Navbar() {
               </Box>
               {/* aqui van los pings nuevitos */}
               <Box>
+                <CovidStats />
+              </Box>
+              <Box>
                 <Button
                   color="inherit"
                   onClick={() => navigate('/map/show_ubications')}
@@ -66,6 +70,9 @@ export default function Navbar() {
                   onClick={() => navigate('/pings/show_send')}
                 >
                   pings enviados
+                  onClick={() => navigate('/map/compare')}
+                >
+                  Comparar
                 </Button>
                 <Button color="inherit" onClick={handleUserLogout}>
                   Cerrar sesión

@@ -16,6 +16,7 @@ const ShowPingsSendPage = lazy(() => import('./pages/pings/pings_send'));
 const ShowUserUbicationsPage = lazy(() => import('./pages/user/show.user.ubications.page'));
 
 const UserList = lazy(() => import('./pages/users/UserList'));
+const CompareMapPage = lazy(() => import('./pages/compare/compare.page'));
 
 export default function Router() {
   return (
@@ -34,6 +35,7 @@ export default function Router() {
             <Route path="/pings/show_received" element={<ShowPingsReceivedPage />} />
             <Route path="/pings/show_send" element={<ShowPingsSendPage />} />
             <Route path="/users/list" element={<UserList />} />
+            <Route path="/map/compare" element={<CompareMapPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
