@@ -95,13 +95,13 @@ export default function Navbar() {
               <Box>
                 <Button
                   color="inherit"
-                  onClick={() => navigate('/session/login')}
+                  onClick={() => navigate('/login')}
                 >
                   Iniciar sesión
                 </Button>
                 <Button
                   color="inherit"
-                  onClick={() => navigate('/session/signup')}
+                  onClick={() => navigate('/register')}
                 >
                   Registrarse
                 </Button>
