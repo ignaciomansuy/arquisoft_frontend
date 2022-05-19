@@ -1,11 +1,7 @@
 import config from '../config';
 
 const sendImagesUrl = async (urls, userId, setMessage) => {
-  const info = {
-    foto_0: urls[0],
-    foto_1: urls[1],
-    foto_2: urls[2],
-  };
+  const info = {photos: urls};
   const requestOptions = {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
@@ -13,7 +9,7 @@ const sendImagesUrl = async (urls, userId, setMessage) => {
   };
   try {
     const response = await fetch(
-      `${config.API_URL}/users/${userId}/update_images`,
+      `${config.API_URL}/user/${userId}/update_images`,
       requestOptions,
     );
     if (!response.ok) {

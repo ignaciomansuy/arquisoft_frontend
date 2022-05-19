@@ -4,20 +4,6 @@ import Hero from '../../components/layout/hero.component';
 import config from "../../config"
 
 export default function HomePage() {
-  useEffect(() => {
-    fetch(`${config.API_URL}`)
-      .then((response) => {
-        if (!response.ok) {
-          console.log(response);
-          return [];
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
   return (
     <Hero
       navbar

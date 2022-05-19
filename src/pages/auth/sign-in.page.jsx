@@ -50,7 +50,7 @@ export default function SignInPage() {
             };
             try {
               const response = await fetch(
-                `${config.API_URL}/login`,
+                `${config.API_URL}/login/`,
                 requestOptions
               );
               if (!response.ok) {
