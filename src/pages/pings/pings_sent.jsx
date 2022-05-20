@@ -35,7 +35,8 @@ export default function sendPings() {
     setLoading(true);
     const info = {
       "sender_user_id": currentUser.data.id,
-      "receiver_user_id": receiver_id
+      "receiver_user_id": receiver_id, 
+      "active": true,
     }
     console.log(info)
     const requestOptions = {
