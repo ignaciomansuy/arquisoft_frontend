@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { Deserializer } from 'jsonapi-serializer';
 import config from '../../config';
 import useAuth from '../../hooks/useAuth';
-import { DataGrid } from '@mui/x-data-grid'; 
+import { DataGrid } from '@mui/x-data-grid';
+import Loading from '../../components/ui/loading.component'; 
 
 export default function sendPings() {
   const [users, setUsers] = useState([]);
@@ -68,7 +69,7 @@ export default function sendPings() {
   if (loading) {
     return (
       <section className='container'>
-        <h2>Loading...</h2>
+        <Loading/>
       </section>
     );
   }
