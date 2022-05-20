@@ -46,7 +46,7 @@ function UserLocationMarker(userId) {
       .catch((error) => console.log(error));
   }, []);
   return ubications.map((ubi) => (
-      <Marker key={ubi.id} position={ubi.latLng.coordinates}>
+      <Marker key={ubi.id} position={ubi.coordinate.coordinates}>
         <Popup>
           {ubi.name} <br /> De usuario: {ubi.userId}
         </Popup>

@@ -87,8 +87,8 @@ useEffect(() => {
                 <StyledTableCell component="th" scope="row">
                   {ubi.name}
                 </StyledTableCell>
-                <StyledTableCell align="right">{ubi.latLng.coordinates[0]}</StyledTableCell>
-                <StyledTableCell align="right">{ubi.latLng.coordinates[1]}</StyledTableCell>
+                <StyledTableCell align="right">{ubi.coordinate.coordinates[0]}</StyledTableCell>
+                <StyledTableCell align="right">{ubi.coordinate.coordinates[1]}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
