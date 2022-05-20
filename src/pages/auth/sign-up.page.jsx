@@ -21,7 +21,7 @@ import uploadFilesFunction from '../../hooks/uploadFile';
 import sendImagesUrl from '../../hooks/sendImagesUrl';
 
 const validationSchema = Yup.object({
-  name: Yup.string().required('Required'),
+  firstname: Yup.string().required('Required'),
   lastname: Yup.string().required('Required'),
   username: Yup.string().required('Required'),
   email: Yup.string().email('Debe ser un mail válido').required('Required'),
@@ -45,7 +45,7 @@ export default function SignUpPage() {
   const [message, setMessage] = useState('');
   return (
     <Hero navbar>
-      {currentUser && <Navigate to="/map/show" />}
+      {currentUser && <Navigate to="/" />}
       <Breadcrumbs sx={{ my: 4 }}>
         <Link color="inherit" to="/" component={RouterLink}>
           Home
@@ -59,7 +59,7 @@ export default function SignUpPage() {
       <Box sx={{ my: 2 }}>
         <Formik
           initialValues={{
-            name: '',
+            firstname: '',
             lastname: '',
             username: '',
             email: '',
@@ -79,7 +79,7 @@ export default function SignUpPage() {
             };
             try {
               const response = await fetch(
-                `${config.API_URL}/users/register`,
+                `${config.API_URL}/user/register`,
                 requestOptions
               );
               if (!response.ok) {
@@ -109,13 +109,13 @@ export default function SignUpPage() {
               <TextField
                 sx={{ my: 1 }}
                 label="Nombre"
-                name="name"
+                name="firstname"
                 size="large"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.name}
-                error={errors.name && touched.name}
-                helperText={errors.name && touched.name ? errors.name : null}
+                value={values.firstname}
+                error={errors.firstname && touched.firstname}
+                helperText={errors.firstname && touched.firstname ? errors.firstname : null}
                 fullWidth
               />
               <TextField

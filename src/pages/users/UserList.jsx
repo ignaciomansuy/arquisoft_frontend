@@ -16,7 +16,7 @@ const UserList = () => {
     };
     
     setLoading(true);
-    fetch(`${config.API_URL}/users/list`, requestOptions)
+    fetch(`${config.API_URL}/user/index`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           setError(true);
@@ -41,8 +41,14 @@ const UserList = () => {
   }
   
   let columns = [{
-    field: 'name',
+    field: 'firstname',
     headerName: 'Nombre',
+    width: 250,
+    editable: false,
+  },
+  {
+    field: 'lastname',
+    headerName: 'Apellido',
     width: 250,
     editable: false,
   },

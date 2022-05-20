@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Typography from '@mui/material/Typography';
 import Hero from '../../components/layout/hero.component';
+import config from "../../config"
 
 export default function HomePage() {
   return (

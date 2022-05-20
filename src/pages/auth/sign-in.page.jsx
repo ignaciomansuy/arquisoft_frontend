@@ -25,7 +25,7 @@ export default function SignInPage() {
   const [message, setMessage] = useState('');
   return (
     <Hero navbar>
-      {currentUser && <Navigate to="/map/show" />}
+      {currentUser && <Navigate to="/" />}
       <Breadcrumbs sx={{ my: 4 }}>
         <Link color="inherit" to="/" component={RouterLink}>
           Home
@@ -50,7 +50,7 @@ export default function SignInPage() {
             };
             try {
               const response = await fetch(
-                `${config.API_URL}/session/login`,
+                `${config.API_URL}/login/`,
                 requestOptions
               );
               if (!response.ok) {

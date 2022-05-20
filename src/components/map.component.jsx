@@ -25,13 +25,7 @@ function LocationMarker() {
   const [ubications, setUbications] = useState([]);
 
   useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    fetch(`${config.API_URL}/map/show`, requestOptions)
+    fetch(`${config.API_URL}/map/index`)
       .then((response) => {
         if (!response.ok) {
           return [];
@@ -55,7 +49,7 @@ function LocationMarker() {
     },
   });
   return ubications.map((ubi) => (
-      <Marker key={ubi.id} position={ubi.latLng.coordinates}>
+      <Marker key={ubi.id} position={ubi.coordinate.coordinates}>
         <Popup>
           {ubi.name} <br /> De usuario: {ubi.userId}
         </Popup>

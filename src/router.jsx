@@ -26,8 +26,8 @@ export default function Router() {
         <Suspense fallback={<Hero navbar />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/session/signup" element={<SignUpPage />} />
-            <Route path="/session/login" element={<SignInPage />} />
+            <Route path="/register" element={<SignUpPage />} />
+            <Route path="/login" element={<SignInPage />} />
             <Route path="/map/show" element={<ShowMapPage />} />
             <Route path="/map/add_ubication" element={<AddUbicationPage />} />
             <Route path="/map/show_ubications" element={<ShowUserUbicationsPage />} />

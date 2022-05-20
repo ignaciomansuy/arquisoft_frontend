@@ -19,7 +19,7 @@ export default function CompareMapPage() {
         'Content-Type': 'application/json',
       },
     };
-    fetch(`${config.API_URL}/users/list`, requestOptions)
+    fetch(`${config.API_URL}/user/index`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           return [];
