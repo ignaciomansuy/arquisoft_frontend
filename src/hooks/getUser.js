@@ -1,6 +1,6 @@
 import config from '../config';
 
-const sendImagesUrl = async (userId) => {
+const getUser = async (userId) => {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
@@ -17,8 +17,8 @@ const sendImagesUrl = async (userId) => {
     const user = response.json();
     return user;
   } catch (error) {
-    setMessage(error.message);
+    return null;
   }
 };
 
-export default sendImagesUrl;
+export default getUser;

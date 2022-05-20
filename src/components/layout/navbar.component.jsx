@@ -15,7 +15,7 @@ export default function Navbar() {
     if (!currentUser) {
       navigate('/');
     }
-  }, [currentUser]);
+  }, [currentUser, handleUserLogout]);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
