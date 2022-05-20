@@ -37,10 +37,9 @@ export default function AddUbicationPage() {
         <Formik
           initialValues={{
             name: `${currentUser.data.attributes.username}`,
-            user_id: `${currentUser.data.attributes.id}`,
+            user_id: `${currentUser.data.id}`,
             lat: location.state.lat,
             lng: location.state.lng,
-            id: currentUser.data.id,
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
