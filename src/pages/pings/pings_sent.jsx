@@ -18,7 +18,7 @@ export default function sendPings() {
     };
     
     setLoading(true);
-    fetch(`${config.API_URL}/users/list`, requestOptions)
+    fetch(`${config.API_URL}/user/index`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           setError(true);
@@ -47,7 +47,7 @@ export default function sendPings() {
       },
       body: JSON.stringify(info),
     };
-    fetch(`${config.API_URL}/pings/create`, requestOptions)
+    fetch(`${config.API_URL}/ping/create`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           setMessage(response);
@@ -93,7 +93,10 @@ export default function sendPings() {
                 {users.map((user) => (
                   <tr key={`${user?.id}`}>
                     <td>
-                      {`${user?.name}`}
+                      {`${user?.firstname}`}
+                    </td>
+                    <td>
+                      {`${user?.username}`}
                     </td>
                     <td>
                       <button type="button" onClick={() => makePing(user.id)} className="button is-primary is-small">Send ping</button>
