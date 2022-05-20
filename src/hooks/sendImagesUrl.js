@@ -1,7 +1,7 @@
 import config from '../config';
 
 const sendImagesUrl = async (urls, userId, setMessage) => {
-  const info = {photos: urls};
+  const info = { photos: urls };
   const requestOptions = {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },

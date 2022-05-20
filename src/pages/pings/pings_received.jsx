@@ -46,7 +46,7 @@ export default function PingsReceived() {
         'Content-Type': 'application/json',
       },
     };
-    fetch(`${config.API_URL}/pings/received_by/${currentUser.data.id}`, requestOptions)
+    fetch(`${config.API_URL}/ping/received_by/${currentUser.data.id}`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           return [];
