@@ -46,7 +46,7 @@ export default function pingsSend() {
         'Content-Type': 'application/json',
       },
     };
-    fetch(`${config.API_URL}/pings/sended_by/${currentUser.data.id}`, requestOptions)
+    fetch(`${config.API_URL}/ping/sended_by/${currentUser.data.id}`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           return [];
