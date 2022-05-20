@@ -18,6 +18,7 @@ export default function AddUbicationPage() {
   const { currentUser } = useAuth();
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  console.log(currentUser);
   return (
     <Hero navbar>
       <Typography
@@ -35,7 +36,7 @@ export default function AddUbicationPage() {
       <Box sx={{ my: 2 }}>
         <Formik
           initialValues={{
-            name: '',
+            name: `${currentUser.data.attributes.username}`,
             lat: location.state.lat,
             lng: location.state.lng,
             id: currentUser.data.id,
