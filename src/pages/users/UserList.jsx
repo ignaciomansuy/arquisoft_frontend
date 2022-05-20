@@ -16,7 +16,7 @@ const UserList = () => {
     };
     
     setLoading(true);
-    fetch(`${config.API_URL}/user/list`, requestOptions)
+    fetch(`${config.API_URL}/user/index`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           setError(true);
