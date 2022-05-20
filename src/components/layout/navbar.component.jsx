@@ -77,6 +77,12 @@ export default function Navbar() {
                 >
                   Comparar
                 </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/perfil')}
+                >
+                  Perfil
+                </Button>
                 <Button color="inherit" onClick={handleUserLogout}>
                   Cerrar sesión
                 </Button>
