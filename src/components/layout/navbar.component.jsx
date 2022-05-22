@@ -15,7 +15,7 @@ export default function Navbar() {
     if (!currentUser) {
       navigate('/');
     }
-  }, [currentUser]);
+  }, [currentUser, handleUserLogout]);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -76,6 +76,12 @@ export default function Navbar() {
                   onClick={() => navigate('/map/compare')}
                 >
                   Comparar
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate('/perfil')}
+                >
+                  Perfil
                 </Button>
                 <Button color="inherit" onClick={handleUserLogout}>
                   Cerrar sesión

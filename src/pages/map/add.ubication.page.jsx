@@ -36,7 +36,7 @@ export default function AddUbicationPage() {
       <Box sx={{ my: 2 }}>
         <Formik
           initialValues={{
-            name: `${currentUser.data.attributes.username}`,
+            name: '',
             user_id: `${currentUser.data.id}`,
             lat: location.state.lat,
             lng: location.state.lng,
@@ -76,7 +76,7 @@ export default function AddUbicationPage() {
             <Form>
               <TextField
                 sx={{ my: 1 }}
-                label="Nombre usuario"
+                label="Nombre ubicación"
                 name="name"
                 size="large"
                 onChange={handleChange}
