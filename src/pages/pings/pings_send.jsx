@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Button,
 } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Hero from '../../components/layout/hero.component';
@@ -46,7 +47,10 @@ export default function pingsSend() {
         'Content-Type': 'application/json',
       },
     };
-    fetch(`${config.API_URL}/ping/sended_by/${currentUser.data.id}`, requestOptions)
+    fetch(
+      `${config.API_URL}/ping/sended_by/${currentUser.data.id}`,
+      requestOptions
+    )
       .then((response) => {
         if (!response.ok) {
           return [];
@@ -54,7 +58,10 @@ export default function pingsSend() {
         return response.json();
       })
       .then((data) => {
-        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(data, (_error, pings_send) => setPings_send(pings_send));
+        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(
+          data,
+          (_error, pings_send) => setPings_send(pings_send)
+        );
       })
       .catch((error) => console.log(error));
   }, []);
@@ -76,17 +83,25 @@ export default function pingsSend() {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>id de quien manda</StyledTableCell>
-              <StyledTableCell align="right">id de quien recibe</StyledTableCell>
+              <StyledTableCell>id de quien recibe</StyledTableCell>
+              <StyledTableCell align="right">Estado</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {pings_send.map((ping) => (
               <StyledTableRow key={ping.id}>
                 <StyledTableCell component="th" scope="row">
-                  {ping.senderUserId}
+                  {ping.receiverUserId}
                 </StyledTableCell>
-                <StyledTableCell align="right">{ping.receiverUserId}</StyledTableCell>
+                {ping.active ? (
+                  <StyledTableCell align="right">No respondido</StyledTableCell>
+                ) : (
+                  ping.approved ? (
+                  <StyledTableCell align="right">Aprobado</StyledTableCell>
+                  ) : (
+                    <StyledTableCell align="right">Rechazado</StyledTableCell>
+                    )
+                )}
               </StyledTableRow>
             ))}
           </TableBody>

@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Button,
 } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Hero from '../../components/layout/hero.component';
@@ -37,7 +38,67 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function PingsReceived() {
   const [pings_received, setPings_received] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
   const { currentUser } = useAuth();
+
+  function acceptPing(ping_id) {
+    setLoading(true);
+    const info = {
+      approved: true,
+      active: false,
+    };
+    console.log(info);
+    const requestOptions = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(info),
+    };
+    fetch(`${config.API_URL}/ping/${ping_id}/update_ping`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          setMessage(response);
+          return [];
+        }
+        window.location.reload(false);
+        return [];
+      })
+      .catch((catchedError) => {
+        setMessage(catchedError);
+      })
+      .finally(() => setLoading(false));
+  }
+
+  function rejectPing(ping_id) {
+    setLoading(true);
+    const info = {
+      approved: false,
+      active: false,
+    };
+    console.log(info);
+    const requestOptions = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(info),
+    };
+    fetch(`${config.API_URL}/ping/${ping_id}/update_ping`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          setMessage(response);
+          return [];
+        }
+        window.location.reload(false);
+        return [];
+      })
+      .catch((catchedError) => {
+        setMessage(catchedError);
+      })
+      .finally(() => setLoading(false));
+  }
 
   useEffect(() => {
     const requestOptions = {
@@ -46,7 +107,10 @@ export default function PingsReceived() {
         'Content-Type': 'application/json',
       },
     };
-    fetch(`${config.API_URL}/ping/received_by/${currentUser.data.id}`, requestOptions)
+    fetch(
+      `${config.API_URL}/ping/received_by/${currentUser.data.id}`,
+      requestOptions
+    )
       .then((response) => {
         if (!response.ok) {
           return [];
@@ -54,7 +118,10 @@ export default function PingsReceived() {
         return response.json();
       })
       .then((data) => {
-        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(data, (_error, pings_received) => setPings_received(pings_received));
+        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(
+          data,
+          (_error, pings_received) => setPings_received(pings_received)
+        );
       })
       .catch((error) => console.log(error));
   }, []);
@@ -77,18 +144,50 @@ export default function PingsReceived() {
           <TableHead>
             <TableRow>
               <StyledTableCell>id de quien manda</StyledTableCell>
-              <StyledTableCell align="right">id de quien recibe</StyledTableCell>
+              <StyledTableCell align="right">Aceptar/Rechazar</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {pings_received.map((ping) => (
-              <StyledTableRow key={ping.id}>
-                <StyledTableCell component="th" scope="row">
-                  {ping.senderUserId}
-                </StyledTableCell>
-                <StyledTableCell align="right">{ping.receiverUserId}</StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {pings_received.map((ping) =>
+              ping.active ? (
+                <StyledTableRow key={ping.id}>
+                  <StyledTableCell component="th" scope="row">
+                    {ping.senderUserId}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {' '}
+                    <Button
+                      onClick={() => acceptPing(ping.id)}
+                      variant="contained"
+                      color="success"
+                    >
+                      Aceptar
+                    </Button>
+                    <Button
+                      onClick={() => rejectPing(ping.id)}
+                      variant="outlined"
+                      color="error"
+                    >
+                      Rechazar
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ) : ping.approved ? (
+                <StyledTableRow key={ping.id}>
+                  <StyledTableCell component="th" scope="row">
+                    {ping.senderUserId}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">Lo aprobaste</StyledTableCell>
+                </StyledTableRow>
+              ) : (
+                <StyledTableRow key={ping.id}>
+                  <StyledTableCell component="th" scope="row">
+                    {ping.senderUserId}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">Lo rechazastes</StyledTableCell>
+                </StyledTableRow>
+              )
+            )}
           </TableBody>
         </Table>
       </TableContainer>
