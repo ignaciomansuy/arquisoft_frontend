@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Box, Button, Typography, TextField } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Typography, TextField, Checkbox } from '@mui/material';
 import { Formik, Form } from 'formik';
 import { useNavigate, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
+import Loading from '../../components/ui/loading.component';
+import { Deserializer } from 'jsonapi-serializer';
 import useAuth from '../../hooks/useAuth';
 
 const validationSchema = Yup.object({
@@ -17,7 +19,39 @@ export default function AddUbicationPage() {
   const location = useLocation();
   const { currentUser } = useAuth();
   const [message, setMessage] = useState('');
+  const [tags, setTags] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    var requestOptions = {
+      method: 'GET',
+    };
+    setLoading(true);
+    fetch(`${config.API_URL}/tag/all`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          setError(true);
+          return [];
+        }
+        return response.json();
+      })
+      .then((data) => {
+        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(
+          data,
+          (_error, tags) => setTags(tags)
+        );
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+  }, []);
+  if (loading) {
+    return (
+      <section className="container">
+        <Loading />
+      </section>
+    );
+  }
   return (
     <Hero navbar>
       <Typography
@@ -39,6 +73,7 @@ export default function AddUbicationPage() {
             user_id: `${currentUser.data.id}`,
             lat: location.state.lat,
             lng: location.state.lng,
+            tags: [],
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
@@ -109,6 +144,18 @@ export default function AddUbicationPage() {
                 helperText={errors.lng && touched.lng ? errors.lng : null}
                 fullWidth
               />
+              <div role="group" aria-labelledby="checkbox-group">
+                <Typography variant="h5" textAlign="left">
+                  Ingresa tags a tu ubicación:
+                </Typography>
+                {tags.forEach((tag) => (
+                  console.log(tag.name),
+                  <label>
+                    <Checkbox type="checkbox" name="checked" value={tag.id} />
+                    {tag.name}
+                  </label>
+                ))}
+              </div>
               <p className="Errors">{message}</p>
               <Button
                 sx={{ my: 1 }}
