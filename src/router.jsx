@@ -18,6 +18,7 @@ const ShowUserUbicationsPage = lazy(() => import('./pages/user/show.user.ubicati
 const UserList = lazy(() => import('./pages/users/UserList'));
 const CompareMapPage = lazy(() => import('./pages/compare/compare.page'));
 const ProfilePage = lazy(() => import('./pages/user/profile.page'));
+const AuthProfile = lazy(() => import('./pages/user/AuthProfile'));
 
 export default function Router() {
   return (
@@ -38,6 +39,7 @@ export default function Router() {
             <Route path="/users/list" element={<UserList />} />
             <Route path="/map/compare" element={<CompareMapPage />} />
             <Route path="/perfil" element={<ProfilePage />} />
+            <Route path="/profile" element={<AuthProfile />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

@@ -7,10 +7,13 @@ import Typography from '@mui/material/Typography';
 import { useNavigate, Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import CovidStats from '../covi.api.component';
+import LoginButton from "../auth/LoginButton"
+import LogoutButton from "../auth/LogoutButton"
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { currentUser, handleUserLogout } = useAuth();
+  
   useEffect(() => {
     if (!currentUser) {
       navigate('/');
@@ -83,9 +86,7 @@ export default function Navbar() {
                 >
                   Perfil
                 </Button>
-                <Button color="inherit" onClick={handleUserLogout}>
-                  Cerrar sesión
-                </Button>
+                <LogoutButton />
               </Box>
             </>
           ) : (
@@ -99,18 +100,7 @@ export default function Navbar() {
                 F.R.I.E.N.D.S.
               </Typography>
               <Box>
-                <Button
-                  color="inherit"
-                  onClick={() => navigate('/login')}
-                >
-                  Iniciar sesión
-                </Button>
-                <Button
-                  color="inherit"
-                  onClick={() => navigate('/register')}
-                >
-                  Registrarse
-                </Button>
+                <LoginButton />
               </Box>
             </>
           )}
