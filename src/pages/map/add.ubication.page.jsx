@@ -148,10 +148,9 @@ export default function AddUbicationPage() {
                 <Typography variant="h5" textAlign="left">
                   Ingresa tags a tu ubicación:
                 </Typography>
-                {tags.forEach((tag) => (
-                  console.log(tag.name),
+                {tags.map((tag) => (
                   <label>
-                    <Checkbox type="checkbox" name="checked" value={tag.id} />
+                    <Checkbox key={tag.id} type="checkbox" name="tags" value={tag.id} />
                     {tag.name}
                   </label>
                 ))}

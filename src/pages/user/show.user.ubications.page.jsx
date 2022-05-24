@@ -14,6 +14,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
 import useAuth from '../../hooks/useAuth';
+import UbicationTags from '../../components/ubication.tags.component'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -38,15 +39,39 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function ShowUserUbicationsPage() {
   const [ubications, setUbications] = useState([]);
   const { currentUser } = useAuth();
-
-useEffect(() => {
+  // function getUbicationTags(ubication_id) {
+  //   const requestOptions = {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   };
+  //   fetch(`${config.API_URL}/show_tags/${ubication_id}`, requestOptions)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         return [];
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //     })
+  //     .catch((catchedError) => {
+  //       console.log(catchedError);
+  //       return null;
+  //     });
+  // }
+  useEffect(() => {
     const requestOptions = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     };
-    fetch(`${config.API_URL}/map/show_ubications/${currentUser.data.id}`, requestOptions)
+    fetch(
+      `${config.API_URL}/map/show_ubications/${currentUser.data.id}`,
+      requestOptions
+    )
       .then((response) => {
         if (!response.ok) {
           return [];
@@ -54,10 +79,39 @@ useEffect(() => {
         return response.json();
       })
       .then((data) => {
-        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(data, (_error, ubications)=> setUbications(ubications));
+        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(
+          data,
+          (_error, ubications) => setUbications(ubications)
+        );
       })
-      .catch((error) =>  console.log(error));
+      .catch((error) => console.log(error));
   }, []);
+
+  // useEffect(() => {
+  //   const requestOptions = {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   };
+  //   fetch(
+  //     `${config.API_URL}/show_tags/${ubication_id}`,
+  //     requestOptions
+  //   )
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         return [];
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(
+  //         data,
+  //         (_error, ubications) => setUbications(ubications)
+  //       );
+  //     })
+  //     .catch((error) => console.log(error));
+  // }, []);
 
   return (
     <Hero navbar>
@@ -79,6 +133,7 @@ useEffect(() => {
               <StyledTableCell>Nombre</StyledTableCell>
               <StyledTableCell align="right">Latitud</StyledTableCell>
               <StyledTableCell align="right">Longitud</StyledTableCell>
+              <StyledTableCell align="right">Tags</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -87,8 +142,18 @@ useEffect(() => {
                 <StyledTableCell component="th" scope="row">
                   {ubi.name}
                 </StyledTableCell>
-                <StyledTableCell align="right">{ubi.coordinate.coordinates[0]}</StyledTableCell>
-                <StyledTableCell align="right">{ubi.coordinate.coordinates[1]}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {ubi.coordinate.coordinates[0]}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {ubi.coordinate.coordinates[1]}
+                </StyledTableCell>
+                {/* <StyledTableCell align="right">
+                  nada
+                </StyledTableCell> */}
+                <UbicationTags
+                    ubicationId={ubi.id}
+                  />
               </StyledTableRow>
             ))}
           </TableBody>
