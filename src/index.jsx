@@ -14,7 +14,7 @@ root.render(
       <Auth0Provider
         domain="arqui-soft-grupo09.us.auth0.com"
         clientId="VhpDVF1PSTqn6Xg4lzqivIURErz0OfZs"
-        redirectUri={window.location.origin}
+        redirectUri={`${window.location.origin}/check_user`}
         audience="https://arqui-soft-grupo09.us.auth0.com/api/v2/"
         scope="read:current_user update:current_user_metadata"
       > 

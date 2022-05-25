@@ -14,13 +14,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+  const { currentUser, handleUserLogout } = useAuth();
   
-  // useEffect(() => {
-  //   if (!currentUser) {
-  //     navigate('/');
-  //   }
-  // }, [currentUser, handleUserLogout]);
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/');
+    }
+  }, [currentUser, handleUserLogout]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

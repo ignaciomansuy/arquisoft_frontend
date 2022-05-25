@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -42,8 +43,10 @@ const validationSchema = Yup.object({
   ),
 });
 export default function SignUpPage() {
-  const { currentUser, handleUserLogin } = useAuth();
+  const { currentUser, handleUserLogin, accessToken } = useAuth();
   const [message, setMessage] = useState('');
+  const { user } = useAuth0();
+
   return (
     <Hero navbar>
       {currentUser && <Navigate to="/" />}
@@ -63,7 +66,7 @@ export default function SignUpPage() {
             firstname: '',
             lastname: '',
             username: '',
-            email: '',
+            email: user.email,
             foto_1: '',
             foto_2: '',
             foto_3: '',
@@ -75,7 +78,10 @@ export default function SignUpPage() {
           onSubmit={async (values) => {
             const requestOptions = {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+              },
               body: JSON.stringify(values),
             };
             try {
@@ -108,6 +114,7 @@ export default function SignUpPage() {
             setFieldValue
           }) => (
             <Form encType="multipart/form-data">
+              <Typography variant="title2">Tienes que llenar estos datos para poder utilizar la página</Typography>      
               <TextField
                 sx={{ my: 1 }}
                 label="Nombre"
@@ -159,6 +166,7 @@ export default function SignUpPage() {
                 error={errors.email && touched.email}
                 helperText={errors.email && touched.email ? errors.email : null}
                 fullWidth
+                hidden
               />
               <UploadFile id={1} setFieldValue={setFieldValue}/>      
               <UploadFile id={2} setFieldValue={setFieldValue}/>      
@@ -217,18 +225,12 @@ export default function SignUpPage() {
               </FormGroup>
               <p className="Errors">{message}</p>
               <Button variant="contained" size="large" onClick={handleSubmit}>
-                Registrarse
+                Guardar datos
               </Button>
             </Form>
           )}
         </Formik>
       </Box>
-      <Typography variant="body1">
-        Ya tienes una cuenta?{' '}
-        <Link to="/sign-in" component={RouterLink}>
-          Iniciar sesión
-        </Link>
-      </Typography>
     </Hero>
   );
 }

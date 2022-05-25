@@ -1,5 +1,3 @@
-import { useAuth0 } from "@auth0/auth0-react";
-
 const updateMetadata = async () => {
   const domain = "arqui-soft-grupo09.us.auth0.com";
 
