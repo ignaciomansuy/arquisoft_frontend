@@ -9,21 +9,24 @@ import useAuth from '../../hooks/useAuth';
 import CovidStats from '../covi.api.component';
 import LoginButton from "../auth/LoginButton"
 import LogoutButton from "../auth/LogoutButton"
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { currentUser, handleUserLogout } = useAuth();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   
-  useEffect(() => {
-    if (!currentUser) {
-      navigate('/');
-    }
-  }, [currentUser, handleUserLogout]);
+  // useEffect(() => {
+  //   if (!currentUser) {
+  //     navigate('/');
+  //   }
+  // }, [currentUser, handleUserLogout]);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          {currentUser ? (
+          {isAuthenticated ? (
             <>
               <Box>
                 <Button

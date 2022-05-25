@@ -15,7 +15,6 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
 import useAuth from '../../hooks/useAuth';
-import { useAuth0 } from "@auth0/auth0-react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,9 +39,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function pingsSend() {
   const [pings_send, setPings_send] = useState([]);
   const { currentUser } = useAuth();
-  const { user, isAuthenticated, isLoading } = useAuth0();
 
-  console.log(user);
   useEffect(() => {
     const requestOptions = {
       method: 'GET',

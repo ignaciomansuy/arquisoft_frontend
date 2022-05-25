@@ -9,19 +9,19 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Auth0Provider
-    domain="arqui-soft-grupo09.us.auth0.com"
-    clientId="VhpDVF1PSTqn6Xg4lzqivIURErz0OfZs"
-    redirectUri={window.location.origin}
-    audience="https://arqui-soft-grupo09.us.auth0.com/api/v2/"
-    scope="read:current_user update:current_user_metadata"
-  >
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <Auth0Provider
+        domain="arqui-soft-grupo09.us.auth0.com"
+        clientId="VhpDVF1PSTqn6Xg4lzqivIURErz0OfZs"
+        redirectUri={window.location.origin}
+        audience="https://arqui-soft-grupo09.us.auth0.com/api/v2/"
+        scope="read:current_user update:current_user_metadata"
+      > 
         <App />
-      </PersistGate>
-    </Provider>
-  </Auth0Provider>
+      </Auth0Provider>
+    </PersistGate>
+  </Provider>
 );
 
 reportWebVitals();
