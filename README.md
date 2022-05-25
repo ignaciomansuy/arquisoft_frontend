@@ -1,7 +1,7 @@
 # IIC2173 - front end aplicación F.R.I.E.N.D.S. 
 
 ## Para correr la aplicación localmente
-Primero, debes correr el backend siguiendo las instrucciones del README https://github.com/iic2173/e1-2022-1-grupo_15.
+Primero, debes correr el backend siguiendo las instrucciones del README https://github.com/iic2173/e2-2022-1-grupo_09_backend.
 
 ### Configuración de variables de entorno
 
@@ -12,7 +12,7 @@ touch .env
 Luego agregar lo siguiente al archivo `.env`, junto con poner la key ID, secret key y bucket name de tu AWS S3 bucket.
 ```
 PORT=8000
-REACT_APP_API_URL=http://localhost/api
+REACT_APP_API_URL=http://localhost
 DISABLE_ESLINT_PLUGIN=true
 
 REACT_APP_AWS_ACCESS_KEY_ID=<aws_S3_key_ID>
@@ -26,4 +26,4 @@ Finalmente, correr la aplicación:
 Para ver la aplicación dirígete a:  http://localhost:8000
 
 ## Para ver la aplicación en producción
-Dirigirse a http://frontend-friends-app.s3-website-us-east-1.amazonaws.com/
+Dirigirse a 
