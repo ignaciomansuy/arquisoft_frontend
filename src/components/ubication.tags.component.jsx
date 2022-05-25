@@ -19,8 +19,6 @@ export default function UbicationTags(props) {
   const { ubicationId } = props;
   const [tags, setTags] = useState([]);
   useEffect(() => {
-    console.log("Buscando tags de ");
-    console.log(ubicationId);
     const requestOptions = {
       method: 'GET',
       headers: {
