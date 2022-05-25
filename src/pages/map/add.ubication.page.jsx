@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography, TextField, Checkbox } from '@mui/material';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { useNavigate, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 import Hero from '../../components/layout/hero.component';
@@ -73,7 +73,7 @@ export default function AddUbicationPage() {
             user_id: `${currentUser.data.id}`,
             lat: location.state.lat,
             lng: location.state.lng,
-            tags: [],
+            checked_tags: [],
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
@@ -150,7 +150,7 @@ export default function AddUbicationPage() {
                 </Typography>
                 {tags.map((tag) => (
                   <label>
-                    <Checkbox key={tag.id} type="checkbox" name="tags" value={tag.id} />
+                    <Field type="checkbox" name="checked_tags" value={tag.id} />
                     {tag.name}
                   </label>
                 ))}

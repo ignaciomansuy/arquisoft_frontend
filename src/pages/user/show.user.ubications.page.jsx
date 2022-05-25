@@ -39,28 +39,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function ShowUserUbicationsPage() {
   const [ubications, setUbications] = useState([]);
   const { currentUser } = useAuth();
-  // function getUbicationTags(ubication_id) {
-  //   const requestOptions = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   };
-  //   fetch(`${config.API_URL}/show_tags/${ubication_id}`, requestOptions)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         return [];
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //     })
-  //     .catch((catchedError) => {
-  //       console.log(catchedError);
-  //       return null;
-  //     });
-  // }
   useEffect(() => {
     const requestOptions = {
       method: 'GET',
@@ -86,32 +64,6 @@ export default function ShowUserUbicationsPage() {
       })
       .catch((error) => console.log(error));
   }, []);
-
-  // useEffect(() => {
-  //   const requestOptions = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   };
-  //   fetch(
-  //     `${config.API_URL}/show_tags/${ubication_id}`,
-  //     requestOptions
-  //   )
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         return [];
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(
-  //         data,
-  //         (_error, ubications) => setUbications(ubications)
-  //       );
-  //     })
-  //     .catch((error) => console.log(error));
-  // }, []);
 
   return (
     <Hero navbar>
@@ -148,9 +100,6 @@ export default function ShowUserUbicationsPage() {
                 <StyledTableCell align="right">
                   {ubi.coordinate.coordinates[1]}
                 </StyledTableCell>
-                {/* <StyledTableCell align="right">
-                  nada
-                </StyledTableCell> */}
                 <UbicationTags
                     ubicationId={ubi.id}
                   />

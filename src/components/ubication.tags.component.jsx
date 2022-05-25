@@ -3,6 +3,7 @@ import { Deserializer } from 'jsonapi-serializer';
 import config from '../config';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,8 +46,8 @@ export default function UbicationTags(props) {
 
   return (
   <StyledTableCell align="right">
-    {tags.map((tag)=>(
-      tag.name
+    {tags.map((tag) => (
+      <span>    {tag.name}</span>
     ))}
   </StyledTableCell>
   );
