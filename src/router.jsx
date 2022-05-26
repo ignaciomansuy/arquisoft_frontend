@@ -19,6 +19,7 @@ const CompareMapPage = lazy(() => import('./pages/compare/compare.page'));
 const ProfilePage = lazy(() => import('./pages/user/profile.page'));
 const AuthProfile = lazy(() => import('./pages/user/AuthProfile'));
 const CheckUser = lazy(() => import('./pages/auth/checkUser'));
+const Logout = lazy(() => import('./pages/auth/logout'));
 
 export default function Router() {
   return (
@@ -40,6 +41,7 @@ export default function Router() {
             <Route path="/perfil" element={<ProfilePage />} />
             <Route path="/profile" element={<AuthProfile />} />
             <Route path="/check_user" element={<CheckUser />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

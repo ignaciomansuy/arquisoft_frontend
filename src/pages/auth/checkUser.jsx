@@ -10,7 +10,6 @@ const CheckUser= () => {
   const { user, getAccessTokenSilently } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState(null);
   const domain = "arqui-soft-grupo09.us.auth0.com";
 
   useEffect(() => {
@@ -21,7 +20,7 @@ const CheckUser= () => {
           audience: `https://${domain}/api/v2/`,
           scope: "read:current_user",
         });
-        setToken(accessToken);
+        saveAccessToken(accessToken);
   
         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
   
@@ -35,13 +34,12 @@ const CheckUser= () => {
   
         setUserMetadata(user_metadata);
         if (userMetadata && userMetadata.user_id) {
-          setUserLocal(token)
+          setUserLocal()
           .then(() => {
             nagivate('/');
           });
         }
         else{
-          saveAccessToken(token);
           navigate('/register')
         }
       } catch (e) {

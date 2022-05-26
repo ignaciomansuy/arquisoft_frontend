@@ -1,7 +1,8 @@
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../useAuth';
 
-const setUserLocal = async (accessToken) => {
-  const { handleUserLogin, saveAccessToken } = useAuth();
+
+const setUserLocal = async () => {
+  const { handleUserLogin, accessToken } = useAuth();
   const requestOptions = {
     method: 'POST',
     headers: {
@@ -21,7 +22,6 @@ const setUserLocal = async (accessToken) => {
     }
     const user = await response.json();
     handleUserLogin(user);
-    saveAccessToken(accessToken);
   } catch (error) {
     console.log(error);
     setMessage(error.message);

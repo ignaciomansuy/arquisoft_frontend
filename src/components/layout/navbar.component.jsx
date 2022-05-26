@@ -17,11 +17,11 @@ export default function Navbar() {
   const { isAuthenticated } = useAuth0();
   const { currentUser, handleUserLogout } = useAuth();
   
-  useEffect(() => {
-    if (!currentUser) {
-      navigate('/');
-    }
-  }, [currentUser, handleUserLogout]);
+  // useEffect(() => {
+  //   if (!currentUser) {
+  //     navigate('/'); 
+  //   }
+  // }, [currentUser, handleUserLogout]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
