@@ -34,6 +34,16 @@ const CheckUser= () => {
         const { user_metadata } = await metadataResponse.json();
   
         setUserMetadata(user_metadata);
+        if (userMetadata && userMetadata.user_id) {
+          setUserLocal(token)
+          .then(() => {
+            nagivate('/');
+          });
+        }
+        else{
+          saveAccessToken(token);
+          navigate('/register')
+        }
       } catch (e) {
         console.log(e.message);
       }
@@ -48,18 +58,6 @@ const CheckUser= () => {
         <h2>Loading...</h2>
       </section>
     );
-  }
-  else {
-    if (userMetadata && userMetadata.user_id) {
-      setUserLocal(token)
-      .then(() => {
-        nagivate('/');
-      });
-    }
-    else{
-      saveAccessToken(token);
-      navigate('/register')
-    }
   }
 }
 

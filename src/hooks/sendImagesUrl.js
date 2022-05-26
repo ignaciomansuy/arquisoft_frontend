@@ -1,5 +1,5 @@
 import config from '../config';
-import useAuth from '../../hooks/useAuth';
+import useAuth from './useAuth';
 
 const sendImagesUrl = async (urls, userId, setMessage) => {
   const { accessToken } = useAuth();

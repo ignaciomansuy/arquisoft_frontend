@@ -1,4 +1,4 @@
-const updateMetadata = async () => {
+const updateUserId = async () => {
   const domain = "arqui-soft-grupo09.us.auth0.com";
 
   const accessToken = await getAccessTokenSilently({
@@ -25,5 +25,5 @@ const updateMetadata = async () => {
   return user_metadata;
 }
 
-export default updateMetadata;
+export default updateUserId;
 

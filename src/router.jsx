@@ -6,7 +6,6 @@ import Navbar from './components/layout/navbar.component';
 import AuthContextProvider from './context/AuthContext';
 const HomePage = lazy(() => import('./pages/static/home.page'));
 const NotFoundPage = lazy(() => import('./pages/errors/not-found.page'));
-const SignInPage = lazy(() => import('./pages/auth/sign-in.page'));
 const SignUpPage = lazy(() => import('./pages/auth/sign-up.page'));
 const ShowMapPage = lazy(() => import('./pages/map/show.page'));
 const AddUbicationPage = lazy(() => import('./pages/map/add.ubication.page'));
@@ -30,7 +29,6 @@ export default function Router() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<SignUpPage />} />
-            <Route path="/login" element={<SignInPage />} />
             <Route path="/map/show" element={<ShowMapPage />} />
             <Route path="/map/add_ubication" element={<AddUbicationPage />} />
             <Route path="/map/show_ubications" element={<ShowUserUbicationsPage />} />

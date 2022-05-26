@@ -21,6 +21,7 @@ import UploadFile from '../../components/ui/upload.file';
 import uploadFilesFunction from '../../hooks/uploadFile';
 import sendImagesUrl from '../../hooks/sendImagesUrl';
 import getUser from '../../hooks/getUser';
+import updateUserId from '../../hooks/auth/updateUserId';
 
 const validationSchema = Yup.object({
   firstname: Yup.string().required('Required'),
@@ -89,6 +90,7 @@ export default function SignUpPage() {
               await sendImagesUrl(urls, user.data.id, setMessage);
               const user_with_photos = await getUser(user.data.id);
               handleUserLogin(user_with_photos);
+              updateUserId(user_with_photos.id);
               setMessage('El usuario se ha creado correctamente');
             } catch (error) {
               setMessage(error.message);
