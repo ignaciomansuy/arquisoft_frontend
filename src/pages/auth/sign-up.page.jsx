@@ -30,13 +30,6 @@ const validationSchema = Yup.object({
   foto_1: Yup.string().required('Requiered'),
   foto_2: Yup.string().required('Requiered'),
   foto_3: Yup.string().required('Requiered'),
-  password: Yup.string()
-    .min(6, 'La contraseña debe tener mínimo 6 caracteres.')
-    .required('Required'),
-  confirmPassword: Yup.string()
-    .min(6, 'La contraseña debe tener mínimo 6 caracteres.')
-    .required('Required')
-    .oneOf([Yup.ref('password'), null], 'Contraseñas no coinciden'),
   acceptConditions: Yup.bool().oneOf(
     [true],
     'You must agree to the terms and conditions'
@@ -70,8 +63,6 @@ export default function SignUpPage() {
             foto_1: '',
             foto_2: '',
             foto_3: '',
-            password: '',
-            confirmPassword: '',
             acceptConditions: false,
           }}
           validationSchema={validationSchema}
@@ -172,38 +163,6 @@ export default function SignUpPage() {
               <UploadFile id={2} setFieldValue={setFieldValue}/>      
               <UploadFile id={3} setFieldValue={setFieldValue}/>
               <Typography variant="body2">Tienes que subir 3 fotos para poder registrarte</Typography>      
-              <TextField
-                sx={{ my: 1 }}
-                label="Contraseña"
-                name="password"
-                size="large"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.password}
-                error={errors.password && touched.password}
-                helperText={
-                  errors.password && touched.password ? errors.password : null
-                }
-                type="password"
-                fullWidth
-              />
-              <TextField
-                sx={{ my: 1 }}
-                label="Confirma tu contraseña"
-                name="confirmPassword"
-                size="large"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.confirmPassword}
-                error={errors.confirmPassword && touched.confirmPassword}
-                helperText={
-                  errors.confirmPassword && touched.confirmPassword
-                    ? errors.confirmPassword
-                    : null
-                }
-                type="password"
-                fullWidth
-              />
               <FormGroup sx={{ my: 1 }}>
                 <FormControlLabel
                   control={
