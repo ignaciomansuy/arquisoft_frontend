@@ -1,10 +1,16 @@
 import config from '../config';
+import useAuth from '../../hooks/useAuth';
 
 const sendImagesUrl = async (urls, userId, setMessage) => {
+  const { accessToken } = useAuth();
+
   const info = { photos: urls };
   const requestOptions = {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
     body: JSON.stringify(info),
   };
   try {
