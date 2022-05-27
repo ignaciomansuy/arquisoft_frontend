@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -22,6 +22,8 @@ import uploadFilesFunction from '../../hooks/uploadFile';
 import sendImagesUrl from '../../hooks/sendImagesUrl';
 import getUser from '../../hooks/getUser';
 import updateUserId from '../../hooks/auth/updateUserId';
+import getAuth0ApiToken from '../../hooks/auth/getAuth0ApiToken';
+
 
 const validationSchema = Yup.object({
   firstname: Yup.string().required('Required'),
@@ -40,7 +42,13 @@ export default function SignUpPage() {
   const { currentUser, handleUserLogin, accessToken } = useAuth();
   const [message, setMessage] = useState('');
   const { user } = useAuth0();
+  const [token, setToken] = useState('');
 
+  useEffect(() => {
+    (async () =>  {
+      setToken(await getAuth0ApiToken());
+    })();
+  }, []);
   return (
     <Hero navbar>
       {currentUser && <Navigate to="/" />}
@@ -72,7 +80,7 @@ export default function SignUpPage() {
               method: 'POST',
               headers: { 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`,
+                'Authorization': `Bearer ${token}`,
               },
               body: JSON.stringify(values),
             };
@@ -195,3 +203,4 @@ export default function SignUpPage() {
     </Hero>
   );
 }
+
