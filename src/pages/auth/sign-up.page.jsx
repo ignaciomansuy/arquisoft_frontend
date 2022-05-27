@@ -89,8 +89,9 @@ export default function SignUpPage() {
               }
               const user = await response.json();
               var urls = await uploadFilesFunction(user.data.id);
-              await useSendImagesUrl(urls, user.data.id, setMessage);
+              await useSendImagesUrl(urls, user.data.id, setMessage, accessToken);
               const user_with_photos = await getUser(user.data.id);
+              console.log(user_with_photos);
               handleUserLogin(user_with_photos);
               useUpdateUserId(user_with_photos.id, user, getAccessTokenSilently);
           }}

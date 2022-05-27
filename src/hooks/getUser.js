@@ -14,7 +14,7 @@ const getUser = async (userId) => {
       const error = await response.text();
       throw new Error(error);
     }
-    const user = response.json();
+    const user = await response.json();
     return user;
   } catch (error) {
     return null;
