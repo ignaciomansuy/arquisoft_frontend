@@ -19,9 +19,9 @@ import Hero from '../../components/layout/hero.component';
 import config from '../../config';
 import UploadFile from '../../components/ui/upload.file';
 import uploadFilesFunction from '../../hooks/uploadFile';
-import sendImagesUrl from '../../hooks/sendImagesUrl';
+import useSendImagesUrl from '../../hooks/sendImagesUrl';
 import getUser from '../../hooks/getUser';
-import updateUserId from '../../hooks/auth/updateUserId';
+import useUpdateUserId from '../../hooks/auth/updateUserId';
 import getAuth0ApiToken from '../../hooks/auth/getAuth0ApiToken';
 
 
@@ -41,7 +41,7 @@ const validationSchema = Yup.object({
 export default function SignUpPage() {
   const { currentUser, handleUserLogin, accessToken } = useAuth();
   const [message, setMessage] = useState('');
-  const { user } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
 
 
   return (
@@ -79,7 +79,6 @@ export default function SignUpPage() {
               },
               body: JSON.stringify(values),
             };
-            try {
               const response = await fetch(
                 `${config.API_URL}/user/register`,
                 requestOptions
@@ -90,14 +89,10 @@ export default function SignUpPage() {
               }
               const user = await response.json();
               var urls = await uploadFilesFunction(user.data.id);
-              await sendImagesUrl(urls, user.data.id, setMessage);
+              await useSendImagesUrl(urls, user.data.id, setMessage);
               const user_with_photos = await getUser(user.data.id);
               handleUserLogin(user_with_photos);
-              updateUserId(user_with_photos.id);
-              setMessage('El usuario se ha creado correctamente');
-            } catch (error) {
-              setMessage(error.message);
-            }
+              useUpdateUserId(user_with_photos.id, user, getAccessTokenSilently);
           }}
         >
           {({

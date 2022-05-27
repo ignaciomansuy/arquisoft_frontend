@@ -1,8 +1,6 @@
 import config from '../config';
-import useAuth from './useAuth';
 
-const sendImagesUrl = async (urls, userId, setMessage) => {
-  const { accessToken } = useAuth();
+const useSendImagesUrl = async (urls, userId, setMessage, accessToken) => {
 
   const info = { photos: urls };
   const requestOptions = {
@@ -27,4 +25,4 @@ const sendImagesUrl = async (urls, userId, setMessage) => {
   }
 };
 
-export default sendImagesUrl;
+export default useSendImagesUrl;

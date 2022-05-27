@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-import setUserLocal from  '../../hooks/auth/setUserLocal';
+import useSetUserLocal from  '../../hooks/auth/setUserLocal';
 import getAuth0ApiToken from '../../hooks/auth/getAuth0ApiToken';
 
 const CheckUser= () => {
   const navigate = useNavigate();
-  const { saveAccessToken } = useAuth();
+  const { handleUserLogin, saveAccessToken } = useAuth();
   const { user, getAccessTokenSilently } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -36,7 +36,7 @@ const CheckUser= () => {
   
         setUserMetadata(user_metadata);
         if (userMetadata && userMetadata.user_id) {
-          setUserLocal()
+          useSetUserLocal(userMetadata.user_id, handleUserLogin)
           .then(() => {
             nagivate('/');
           });

@@ -1,4 +1,4 @@
-const updateUserId = async () => {
+const useUpdateUserId = async (id, user, getAccessTokenSilently) => {
   const domain = "arqui-soft-grupo09.us.auth0.com";
 
   const accessToken = await getAccessTokenSilently({
@@ -16,7 +16,7 @@ const updateUserId = async () => {
     },
     body: JSON.stringify({
       user_metadata: {
-        user_id: 1,
+        user_id: id,
       },
     })
   });
@@ -25,5 +25,5 @@ const updateUserId = async () => {
   return user_metadata;
 }
 
-export default updateUserId;
+export default useUpdateUserId;
 

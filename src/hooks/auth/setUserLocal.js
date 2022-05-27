@@ -1,19 +1,15 @@
-import useAuth from '../useAuth';
+import config from '../../config';
 
-
-const setUserLocal = async () => {
-  const { handleUserLogin, accessToken } = useAuth();
+const useSetUserLocal = async (user_id, handleUserLogin) => {
   const requestOptions = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(values),
   };
   try {
     const response = await fetch(
-      `${config.API_URL}/login/`,
+      `${config.API_URL}/user/${user_id}`,
       requestOptions
     );
     if (!response.ok) {
@@ -24,8 +20,7 @@ const setUserLocal = async () => {
     handleUserLogin(user);
   } catch (error) {
     console.log(error);
-    setMessage(error.message);
   }
 }
 
-export default setUserLocal;
+export default useSetUserLocal;
