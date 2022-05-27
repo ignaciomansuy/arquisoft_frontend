@@ -19,11 +19,12 @@ REACT_APP_AWS_ACCESS_KEY_ID=<aws_S3_key_ID>
 REACT_APP_AWS_SECRET_KEY=<aws_S3_secret_key>
 REACT_APP_AWS_S3_BUCKET_NAME=<aws_s3_bucket_name>
 ```
-
+Instalar las dependencias:
+``` npm install ```
 Finalmente, correr la aplicación:
 ``` npm start ```
 
 Para ver la aplicación dirígete a:  http://localhost:8000
 
 ## Para ver la aplicación en producción
-Dirigirse a 
+Dirigirse a http://deploy-front-e2.s3-website-us-east-1.amazonaws.com
