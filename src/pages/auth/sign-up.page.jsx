@@ -42,13 +42,8 @@ export default function SignUpPage() {
   const { currentUser, handleUserLogin, accessToken } = useAuth();
   const [message, setMessage] = useState('');
   const { user } = useAuth0();
-  const [token, setToken] = useState('');
 
-  useEffect(() => {
-    (async () =>  {
-      setToken(await getAuth0ApiToken());
-    })();
-  }, []);
+
   return (
     <Hero navbar>
       {currentUser && <Navigate to="/" />}
@@ -80,7 +75,7 @@ export default function SignUpPage() {
               method: 'POST',
               headers: { 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${accessToken}`,
               },
               body: JSON.stringify(values),
             };
