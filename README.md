@@ -21,6 +21,7 @@ REACT_APP_AWS_S3_BUCKET_NAME=<aws_s3_bucket_name>
 ```
 Instalar las dependencias:
 ``` npm install ```
+
 Finalmente, correr la aplicación:
 ``` npm start ```
 
