@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -18,8 +19,11 @@ import Hero from '../../components/layout/hero.component';
 import config from '../../config';
 import UploadFile from '../../components/ui/upload.file';
 import uploadFilesFunction from '../../hooks/uploadFile';
-import sendImagesUrl from '../../hooks/sendImagesUrl';
+import useSendImagesUrl from '../../hooks/sendImagesUrl';
 import getUser from '../../hooks/getUser';
+import useUpdateUserId from '../../hooks/auth/updateUserId';
+import getAuth0ApiToken from '../../hooks/auth/getAuth0ApiToken';
+
 
 const validationSchema = Yup.object({
   firstname: Yup.string().required('Required'),
@@ -29,21 +33,17 @@ const validationSchema = Yup.object({
   foto_1: Yup.string().required('Requiered'),
   foto_2: Yup.string().required('Requiered'),
   foto_3: Yup.string().required('Requiered'),
-  password: Yup.string()
-    .min(6, 'La contraseña debe tener mínimo 6 caracteres.')
-    .required('Required'),
-  confirmPassword: Yup.string()
-    .min(6, 'La contraseña debe tener mínimo 6 caracteres.')
-    .required('Required')
-    .oneOf([Yup.ref('password'), null], 'Contraseñas no coinciden'),
   acceptConditions: Yup.bool().oneOf(
     [true],
     'You must agree to the terms and conditions'
   ),
 });
 export default function SignUpPage() {
-  const { currentUser, handleUserLogin } = useAuth();
+  const { currentUser, handleUserLogin, accessToken } = useAuth();
   const [message, setMessage] = useState('');
+  const { user, getAccessTokenSilently } = useAuth0();
+
+
   return (
     <Hero navbar>
       {currentUser && <Navigate to="/" />}
@@ -63,22 +63,22 @@ export default function SignUpPage() {
             firstname: '',
             lastname: '',
             username: '',
-            email: '',
+            email: user.email,
             foto_1: '',
             foto_2: '',
             foto_3: '',
-            password: '',
-            confirmPassword: '',
             acceptConditions: false,
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
             const requestOptions = {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+              },
               body: JSON.stringify(values),
             };
-            try {
               const response = await fetch(
                 `${config.API_URL}/user/register`,
                 requestOptions
@@ -87,15 +87,13 @@ export default function SignUpPage() {
                 const error = await response.text();
                 throw new Error(error);
               }
-              const user = await response.json();
-              var urls = await uploadFilesFunction(user.data.id);
-              await sendImagesUrl(urls, user.data.id, setMessage);
-              const user_with_photos = await getUser(user.data.id);
+              const backendUser = await response.json();
+              var urls = await uploadFilesFunction(backendUser.data.id);
+              await useSendImagesUrl(urls, backendUser.data.id, setMessage, accessToken);
+              const user_with_photos = await getUser(backendUser.data.id);
+              console.log(user_with_photos);
               handleUserLogin(user_with_photos);
-              setMessage('El usuario se ha creado correctamente');
-            } catch (error) {
-              setMessage(error.message);
-            }
+              useUpdateUserId(user_with_photos.data.id, user, getAccessTokenSilently);
           }}
         >
           {({
@@ -108,6 +106,7 @@ export default function SignUpPage() {
             setFieldValue
           }) => (
             <Form encType="multipart/form-data">
+              <Typography variant="title2">Tienes que llenar estos datos para poder utilizar la página</Typography>      
               <TextField
                 sx={{ my: 1 }}
                 label="Nombre"
@@ -159,43 +158,12 @@ export default function SignUpPage() {
                 error={errors.email && touched.email}
                 helperText={errors.email && touched.email ? errors.email : null}
                 fullWidth
+                hidden
               />
               <UploadFile id={1} setFieldValue={setFieldValue}/>      
               <UploadFile id={2} setFieldValue={setFieldValue}/>      
               <UploadFile id={3} setFieldValue={setFieldValue}/>
               <Typography variant="body2">Tienes que subir 3 fotos para poder registrarte</Typography>      
-              <TextField
-                sx={{ my: 1 }}
-                label="Contraseña"
-                name="password"
-                size="large"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.password}
-                error={errors.password && touched.password}
-                helperText={
-                  errors.password && touched.password ? errors.password : null
-                }
-                type="password"
-                fullWidth
-              />
-              <TextField
-                sx={{ my: 1 }}
-                label="Confirma tu contraseña"
-                name="confirmPassword"
-                size="large"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.confirmPassword}
-                error={errors.confirmPassword && touched.confirmPassword}
-                helperText={
-                  errors.confirmPassword && touched.confirmPassword
-                    ? errors.confirmPassword
-                    : null
-                }
-                type="password"
-                fullWidth
-              />
               <FormGroup sx={{ my: 1 }}>
                 <FormControlLabel
                   control={
@@ -217,18 +185,13 @@ export default function SignUpPage() {
               </FormGroup>
               <p className="Errors">{message}</p>
               <Button variant="contained" size="large" onClick={handleSubmit}>
-                Registrarse
+                Guardar datos
               </Button>
             </Form>
           )}
         </Formik>
       </Box>
-      <Typography variant="body1">
-        Ya tienes una cuenta?{' '}
-        <Link to="/sign-in" component={RouterLink}>
-          Iniciar sesión
-        </Link>
-      </Typography>
     </Hero>
   );
 }
+

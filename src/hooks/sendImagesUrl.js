@@ -1,10 +1,14 @@
 import config from '../config';
 
-const sendImagesUrl = async (urls, userId, setMessage) => {
+const useSendImagesUrl = async (urls, userId, setMessage, accessToken) => {
+
   const info = { photos: urls };
   const requestOptions = {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
     body: JSON.stringify(info),
   };
   try {
@@ -21,4 +25,4 @@ const sendImagesUrl = async (urls, userId, setMessage) => {
   }
 };
 
-export default sendImagesUrl;
+export default useSendImagesUrl;

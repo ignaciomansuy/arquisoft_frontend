@@ -6,7 +6,6 @@ import Navbar from './components/layout/navbar.component';
 import AuthContextProvider from './context/AuthContext';
 const HomePage = lazy(() => import('./pages/static/home.page'));
 const NotFoundPage = lazy(() => import('./pages/errors/not-found.page'));
-const SignInPage = lazy(() => import('./pages/auth/sign-in.page'));
 const SignUpPage = lazy(() => import('./pages/auth/sign-up.page'));
 const ShowMapPage = lazy(() => import('./pages/map/show.page'));
 const AddUbicationPage = lazy(() => import('./pages/map/add.ubication.page'));
@@ -18,6 +17,9 @@ const ShowUserUbicationsPage = lazy(() => import('./pages/user/show.user.ubicati
 const UserList = lazy(() => import('./pages/users/UserList'));
 const CompareMapPage = lazy(() => import('./pages/compare/compare.page'));
 const ProfilePage = lazy(() => import('./pages/user/profile.page'));
+const AuthProfile = lazy(() => import('./pages/user/AuthProfile'));
+const CheckUser = lazy(() => import('./pages/auth/checkUser'));
+const Logout = lazy(() => import('./pages/auth/logout'));
 
 export default function Router() {
   return (
@@ -28,7 +30,6 @@ export default function Router() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<SignUpPage />} />
-            <Route path="/login" element={<SignInPage />} />
             <Route path="/map/show" element={<ShowMapPage />} />
             <Route path="/map/add_ubication" element={<AddUbicationPage />} />
             <Route path="/map/show_ubications" element={<ShowUserUbicationsPage />} />
@@ -38,6 +39,9 @@ export default function Router() {
             <Route path="/users/list" element={<UserList />} />
             <Route path="/map/compare" element={<CompareMapPage />} />
             <Route path="/perfil" element={<ProfilePage />} />
+            <Route path="/profile" element={<AuthProfile />} />
+            <Route path="/check_user" element={<CheckUser />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

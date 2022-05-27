@@ -7,20 +7,27 @@ import Typography from '@mui/material/Typography';
 import { useNavigate, Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import CovidStats from '../covi.api.component';
+import LoginButton from "../auth/LoginButton"
+import LogoutButton from "../auth/LogoutButton"
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth0();
   const { currentUser, handleUserLogout } = useAuth();
-  useEffect(() => {
-    if (!currentUser) {
-      navigate('/');
-    }
-  }, [currentUser, handleUserLogout]);
+  
+  // useEffect(() => {
+  //   if (!currentUser) {
+  //     navigate('/'); 
+  //   }
+  // }, [currentUser, handleUserLogout]);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          {currentUser ? (
+          {isAuthenticated ? (
             <>
               <Box>
                 <Button
@@ -83,9 +90,7 @@ export default function Navbar() {
                 >
                   Perfil
                 </Button>
-                <Button color="inherit" onClick={handleUserLogout}>
-                  Cerrar sesión
-                </Button>
+                <LogoutButton />
               </Box>
             </>
           ) : (
@@ -99,18 +104,7 @@ export default function Navbar() {
                 F.R.I.E.N.D.S.
               </Typography>
               <Box>
-                <Button
-                  color="inherit"
-                  onClick={() => navigate('/login')}
-                >
-                  Iniciar sesión
-                </Button>
-                <Button
-                  color="inherit"
-                  onClick={() => navigate('/register')}
-                >
-                  Registrarse
-                </Button>
+                <LoginButton />
               </Box>
             </>
           )}
