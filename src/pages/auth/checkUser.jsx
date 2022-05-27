@@ -35,10 +35,10 @@ const CheckUser= () => {
         const { user_metadata } = await metadataResponse.json();
   
         setUserMetadata(user_metadata);
-        if (userMetadata && userMetadata.user_id) {
-          useSetUserLocal(userMetadata.user_id, handleUserLogin)
+        if (user_metadata && user_metadata.user_id) {
+          useSetUserLocal(user_metadata.user_id, handleUserLogin)
           .then(() => {
-            nagivate('/');
+            navigate('/');
           });
         }
         else{
