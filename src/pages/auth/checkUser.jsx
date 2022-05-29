@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useSetUserLocal from  '../../hooks/auth/setUserLocal';
-import getAuth0ApiToken from '../../hooks/auth/getAuth0ApiToken';
+import loginUser from '../../hooks/auth/loginUser';
 
 const CheckUser= () => {
   const navigate = useNavigate();
@@ -17,12 +17,12 @@ const CheckUser= () => {
     setLoading(true);
     const getUserMetadata = async () => {
       try {
-        saveAccessToken(await getAuth0ApiToken());
 
         const accessToken = await getAccessTokenSilently({
           audience: `https://${domain}/api/v2/`,
           scope: "read:current_user",
         });
+        saveAccessToken(accessToken);
   
         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
   
@@ -37,9 +37,8 @@ const CheckUser= () => {
         setUserMetadata(user_metadata);
         if (user_metadata && user_metadata.user_id) {
           useSetUserLocal(user_metadata.user_id, handleUserLogin)
-          .then(() => {
-            navigate('/');
-          });
+          .then(() => loginUser(accessToken, saveAccessToken))
+          .then(() => navigate('/'));
         }
         else{
           navigate('/register')
