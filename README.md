@@ -28,4 +28,4 @@ Finalmente, correr la aplicación:
 Para ver la aplicación dirígete a:  http://localhost:8000
 
 ## Para ver la aplicación en producción
-Dirigirse a http://deploy-front-e2.s3-website-us-east-1.amazonaws.com
+Dirigirse a https://friends-frontend.tk/
