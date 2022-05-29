@@ -1,10 +1,13 @@
+import config from '../../config';
+
+
 const getAuth0ApiToken = async () => {
   const requestOptions = {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
     },
-    body: '{"client_id":"Xv5AbCUIohlbqQOXOtBVbmIgt0dcjrec","client_secret":"XTMwPgUr8sUfFWwr2mo-Bw4edWgDUlTBSNCn62jKR9fzgqGXW22XW9sVQio5qJ5x","audience":"http://localhost","grant_type":"client_credentials"}' 
+    body: `{"client_id":"${config.AUTH0_CLIENT_ID}","client_secret":"${config.AUTH0_CLIENT_SECRET}","audience":"${config.AUDIENCE}","grant_type":"client_credentials"}` 
   };
   try {
     const response = await fetch(
