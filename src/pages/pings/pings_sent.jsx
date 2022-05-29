@@ -15,6 +15,9 @@ export default function sendPings() {
   const [error, setError] = useState(false);
   const { currentUser } = useAuth();
 
+  // URL to index calculation service
+  const INDEX_SERVICE_URL = 'http://localhost:40/dindin/';
+
   useEffect(() => {
     var requestOptions = {
       method: 'GET',
@@ -39,6 +42,38 @@ export default function sendPings() {
       .finally(() => setLoading(false));
   }, []);
 
+  // creates an empty index result instance, that will be later updated by the index calculation service
+  const create_index_result = (ping_id) => {
+    const info = {
+      siin: null,
+      sidi: null,
+      dindin: null,
+      state: 'pending',
+      pingId: ping_id,
+    };
+    console.log(info);
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(info),
+    };
+    fetch(`${config.API_URL}/index-result/create`, requestOptions)
+    .catch((error) =>  console.log(error));
+  }
+
+  const calculate_indexes = (sender_id, receiver_id, ping_id) => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    fetch(INDEX_SERVICE_URL + `${sender_id}/${receiver_id}/${ping_id}/`, requestOptions)
+    .catch((error) =>  console.log(error));
+  }
+
   function makePing(receiver_id) {
     setLoading(true);
     const info = {
@@ -55,12 +90,15 @@ export default function sendPings() {
       body: JSON.stringify(info),
     };
     fetch(`${config.API_URL}/ping/create`, requestOptions)
-      .then((response) => {
+      .then(async (response) => {
+        const pingData = await response.json()
         if (!response.ok) {
           setMessage(response);
           setError(true);
           return [];
         }
+        create_index_result(pingData.data.id);
+        // calculate_indexes(info.sender_user_id, receiver_id, pingData.data.id);
         window.location.reload(false);
         return [];
       })
@@ -68,7 +106,9 @@ export default function sendPings() {
         setMessage(catchedError);
         setError(true);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false)
+      });
   }
 
   const addUser = (user) => setUsers((prevState) => [...prevState, user]);
