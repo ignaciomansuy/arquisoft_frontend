@@ -23,6 +23,8 @@ import useSendImagesUrl from '../../hooks/sendImagesUrl';
 import getUser from '../../hooks/getUser';
 import useUpdateUserId from '../../hooks/auth/updateUserId';
 import loginUser from '../../hooks/auth/loginUser';
+import Loading from '../../components/ui/loading.component';
+
 
 
 const validationSchema = Yup.object({
@@ -42,7 +44,15 @@ export default function SignUpPage() {
   const { currentUser, handleUserLogin, accessToken, saveAccessToken } = useAuth();
   const [message, setMessage] = useState('');
   const { user, getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false);
 
+  if (loading) {
+    return (
+      <section className="container">
+        <Loading />
+      </section>
+    );
+  }
 
   return (
     <Hero navbar>
@@ -71,6 +81,7 @@ export default function SignUpPage() {
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
+            setLoading(true);
             const requestOptions = {
               method: 'POST',
               headers: { 
@@ -85,6 +96,7 @@ export default function SignUpPage() {
               );
               if (!response.ok) {
                 const error = await response.text();
+                setLoading(false);
                 throw new Error(error);
               }
               const backendUser = await response.json();
@@ -94,6 +106,7 @@ export default function SignUpPage() {
               const user_with_photos = await getUser(backendUser.data.id);
               handleUserLogin(user_with_photos);
               useUpdateUserId(user_with_photos.data.id, user, getAccessTokenSilently);
+              setLoading(false);
           }}
         >
           {({
@@ -146,19 +159,6 @@ export default function SignUpPage() {
                   errors.username && touched.username ? errors.username : null
                 }
                 fullWidth
-              />
-              <TextField
-                sx={{ my: 1 }}
-                label="Email"
-                name="email"
-                size="large"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.email}
-                error={errors.email && touched.email}
-                helperText={errors.email && touched.email ? errors.email : null}
-                fullWidth
-                hidden
               />
               <UploadFile id={1} setFieldValue={setFieldValue}/>      
               <UploadFile id={2} setFieldValue={setFieldValue}/>      
