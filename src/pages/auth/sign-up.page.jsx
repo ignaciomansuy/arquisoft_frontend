@@ -22,7 +22,7 @@ import uploadFilesFunction from '../../hooks/uploadFile';
 import useSendImagesUrl from '../../hooks/sendImagesUrl';
 import getUser from '../../hooks/getUser';
 import useUpdateUserId from '../../hooks/auth/updateUserId';
-import getAuth0ApiToken from '../../hooks/auth/getAuth0ApiToken';
+import loginUser from '../../hooks/auth/loginUser';
 
 
 const validationSchema = Yup.object({
@@ -39,7 +39,7 @@ const validationSchema = Yup.object({
   ),
 });
 export default function SignUpPage() {
-  const { currentUser, handleUserLogin, accessToken } = useAuth();
+  const { currentUser, handleUserLogin, accessToken, saveAccessToken } = useAuth();
   const [message, setMessage] = useState('');
   const { user, getAccessTokenSilently } = useAuth0();
 
@@ -89,9 +89,9 @@ export default function SignUpPage() {
               }
               const backendUser = await response.json();
               var urls = await uploadFilesFunction(backendUser.data.id);
-              await useSendImagesUrl(urls, backendUser.data.id, setMessage, accessToken);
+              const newToken = await loginUser(accessToken, saveAccessToken);
+              await useSendImagesUrl(urls, backendUser.data.id, setMessage, newToken);
               const user_with_photos = await getUser(backendUser.data.id);
-              console.log(user_with_photos);
               handleUserLogin(user_with_photos);
               useUpdateUserId(user_with_photos.data.id, user, getAccessTokenSilently);
           }}

@@ -1,17 +1,17 @@
 import config from '../../config';
 
 
-const getAuth0ApiToken = async () => {
+const loginUser = async (access_token, saveAccessToken) => {
   const requestOptions = {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${access_token}`
     },
-    body: `{"client_id":"${config.AUTH0_CLIENT_ID}","client_secret":"${config.AUTH0_CLIENT_SECRET}","audience":"${config.AUDIENCE}","grant_type":"client_credentials"}` 
   };
   try {
     const response = await fetch(
-      `https://arqui-soft-grupo09.us.auth0.com/oauth/token`,
+      `${config.API_URL}/auth/login`,
       requestOptions
     );
     if (!response.ok) {
@@ -19,10 +19,11 @@ const getAuth0ApiToken = async () => {
       throw new Error(error);
     }
     const data = await response.json();
-    return data.access_token;
+    saveAccessToken(data.token);
+    return data.token;
   } catch (error) {
     console.log(error.message);
   }
 };
 
-export default getAuth0ApiToken;
+export default loginUser;
