@@ -46,16 +46,9 @@ export default function SignUpPage() {
   const { user, getAccessTokenSilently } = useAuth0();
   const [loading, setLoading] = useState(false);
 
-  if (loading) {
-    return (
-      <section className="container">
-        <Loading />
-      </section>
-    );
-  }
-
   return (
     <Hero navbar>
+      {loading && <Loading /> }
       {currentUser && <Navigate to="/" />}
       <Breadcrumbs sx={{ my: 4 }}>
         <Link color="inherit" to="/" component={RouterLink}>
@@ -100,7 +93,9 @@ export default function SignUpPage() {
                 throw new Error(error);
               }
               const backendUser = await response.json();
+              console.log("entrando a upload files")
               var urls = await uploadFilesFunction(backendUser.data.id);
+              console.log(urls);
               const newToken = await loginUser(accessToken, saveAccessToken);
               await useSendImagesUrl(urls, backendUser.data.id, setMessage, newToken);
               const user_with_photos = await getUser(backendUser.data.id);
