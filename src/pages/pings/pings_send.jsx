@@ -15,6 +15,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
 import useAuth from '../../hooks/useAuth';
+import Modal from 'react-modal';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,8 +37,22 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+Modal.setAppElement('#root');
+
 export default function pingsSend() {
   const [pings_send, setPings_send] = useState([]);
+  const [modalIsOpen, setIsOpen] = React.useState(false);
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -65,6 +80,52 @@ export default function pingsSend() {
       })
       .catch((error) => console.log(error));
   }, []);
+  
+  const [pingId, setPingId] = useState();
+  const [IndexResultState, setIndexResultState] = useState();
+  const [sidi, setSidi] = useState();
+  const [siin, setSiin] = useState();
+  const [dindin, setDindin] = useState();
+  // const [lastUpdate, setlastUpdated] = useState();
+
+  function openModal(ping_id) {
+    setPingId(ping_id);
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    fetch(
+      `${config.API_URL}/index-result/${pingId}`,
+      requestOptions
+    )
+      .then((response) => {
+        if (!response.ok) {
+          return [];
+        }
+        return response.json();
+      })
+      .then((data) => {
+        new Deserializer({ keyForAttribute: 'camelCase' }).deserialize(
+          data,
+        );
+        const atrs = data.data.attributes
+        setSidi(atrs.sidi)
+        setSiin(atrs.siin)
+        setDindin(atrs.dindin)
+        setIndexResultState(atrs.state)
+      })
+      .catch((error) => console.log(error));
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   return (
     <Hero navbar>
@@ -84,6 +145,7 @@ export default function pingsSend() {
           <TableHead>
             <TableRow>
               <StyledTableCell>id de quien recibe</StyledTableCell>
+              <StyledTableCell align="left">Indices</StyledTableCell>
               <StyledTableCell align="right">Estado</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -92,6 +154,32 @@ export default function pingsSend() {
               <StyledTableRow key={ping.id}>
                 <StyledTableCell component="th" scope="row">
                   {ping.receiverUserId}
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Button onClick={() => openModal(ping.id)}>Ver indices</Button>
+                  <Modal
+                    isOpen={modalIsOpen}
+                    onAfterOpen={afterOpenModal}
+                    onRequestClose={closeModal}
+                    contentLabel="Example Modal"
+                    style={customStyles}
+                  >
+                    <h3>Ping {pingId}</h3>
+                    {IndexResultState === 'ready' && 
+                      <div className='index-results'>
+                        <p>Indice Sidi (distancia) : {sidi}</p>
+                        <p>Indice Siin (intereses comunes) : {siin}</p>
+                        <p>Indice DinDin (sidi x siin) : {dindin}</p>
+                      </div>
+                    }
+                    {IndexResultState === 'missing points' &&
+                      <h4>Cuando hiciste el ping, tú o el otro usuario no tenian ubicaciones guardadas</h4>
+                    }
+                    {IndexResultState === 'pending' && 
+                      <h4>Aún no termina el calculo de los indices, te notificaremos via email cuando esten listos!</h4>
+                    }
+                    <button onClick={closeModal}>Cerrar</button>
+                  </Modal>
                 </StyledTableCell>
                 {ping.active ? (
                   <StyledTableCell align="right">No respondido</StyledTableCell>
