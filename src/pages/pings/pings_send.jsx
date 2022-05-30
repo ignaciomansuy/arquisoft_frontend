@@ -172,7 +172,10 @@ export default function pingsSend() {
                         <p>Indice DinDin (sidi x siin) : {dindin}</p>
                       </div>
                     }
-                    {IndexResultState !== 'ready' && 
+                    {IndexResultState === 'missing points' &&
+                      <h4>Cuando hiciste el ping, tú o el otro usuario no tenian ubicaciones guardadas</h4>
+                    }
+                    {IndexResultState === 'pending' && 
                       <h4>Aún no termina el calculo de los indices, te notificaremos via email cuando esten listos!</h4>
                     }
                     <button onClick={closeModal}>Cerrar</button>

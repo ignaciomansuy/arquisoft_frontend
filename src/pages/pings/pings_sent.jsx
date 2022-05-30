@@ -16,7 +16,7 @@ export default function sendPings() {
   const { currentUser } = useAuth();
 
   // URL to index calculation service
-  const INDEX_SERVICE_URL = 'http://localhost:40/dindin/';
+  const INDEX_SERVICE_URL = 'http://44.195.135.225/';
 
   useEffect(() => {
     var requestOptions = {
@@ -98,7 +98,7 @@ export default function sendPings() {
           return [];
         }
         create_index_result(pingData.data.id);
-        // calculate_indexes(info.sender_user_id, receiver_id, pingData.data.id);
+        calculate_indexes(info.sender_user_id, receiver_id, pingData.data.id);
         window.location.reload(false);
         return [];
       })
