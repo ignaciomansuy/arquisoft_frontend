@@ -16,7 +16,7 @@ export default function sendPings() {
   const { currentUser } = useAuth();
 
   // URL to index calculation service
-  const INDEX_SERVICE_URL = 'http://44.195.135.225/';
+  const INDEX_SERVICE_URL = 'https://k22ok5vv55.execute-api.us-east-1.amazonaws.com/index/dindin/';
 
   useEffect(() => {
     var requestOptions = {
