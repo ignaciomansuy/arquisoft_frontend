@@ -23,7 +23,7 @@ export default function HomePage() {
       </Typography>
       <Typography variant="h4" textAlign="center">
       Regístrate o inicia sesión para tener la mejor experiencia y encontrar
-      amigos para toda la vida. Probando
+      amigos para toda la vida. Probando2
       </Typography>
     </Hero>
   );
