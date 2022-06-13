@@ -51,7 +51,6 @@ export default function sendPings() {
       state: 'pending',
       pingId: ping_id,
     };
-    console.log(info);
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -81,7 +80,6 @@ export default function sendPings() {
       receiver_user_id: receiver_id,
       active: true,
     };
-    console.log(info);
     const requestOptions = {
       method: 'POST',
       headers: {
