@@ -19,7 +19,6 @@ const Img = styled('img')({
 export default function ShowUserUbicationsPage() {
   const { currentUser } = useAuth();
 
-  console.log(currentUser);
   return (
     <Hero navbar>
       <Typography

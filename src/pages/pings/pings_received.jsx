@@ -48,7 +48,6 @@ export default function PingsReceived() {
       approved: true,
       active: false,
     };
-    console.log(info);
     const requestOptions = {
       method: 'PATCH',
       headers: {
@@ -77,7 +76,6 @@ export default function PingsReceived() {
       approved: false,
       active: false,
     };
-    console.log(info);
     const requestOptions = {
       method: 'PATCH',
       headers: {

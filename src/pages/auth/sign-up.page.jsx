@@ -93,9 +93,7 @@ export default function SignUpPage() {
                 throw new Error(error);
               }
               const backendUser = await response.json();
-              console.log("entrando a upload files")
               var urls = await uploadFilesFunction(backendUser.data.id);
-              console.log(urls);
               const newToken = await loginUser(accessToken, saveAccessToken);
               await useSendImagesUrl(urls, backendUser.data.id, setMessage, newToken);
               const user_with_photos = await getUser(backendUser.data.id);
