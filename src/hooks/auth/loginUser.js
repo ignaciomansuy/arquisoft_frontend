@@ -1,12 +1,12 @@
 import config from '../../config';
 
 
-const loginUser = async (access_token, saveAccessToken) => {
+const loginUser = async (auth0Token, saveAccessToken) => {
   const requestOptions = {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${access_token}`
+      'Authorization': `Bearer ${auth0Token}`
     },
   };
   try {
