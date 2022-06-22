@@ -21,6 +21,8 @@ const AuthProfile = lazy(() => import('./pages/user/AuthProfile'));
 const CheckUser = lazy(() => import('./pages/auth/checkUser'));
 const Logout = lazy(() => import('./pages/auth/logout'));
 
+const Chat = lazy(() => import('./pages/chat/show.page'));
+
 export default function Router() {
   return (
     <AuthContextProvider>
@@ -42,6 +44,7 @@ export default function Router() {
             <Route path="/profile" element={<AuthProfile />} />
             <Route path="/check_user" element={<CheckUser />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/chat" element={<Chat />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

@@ -4,11 +4,15 @@ import { Deserializer } from 'jsonapi-serializer';
 import config from '../../config';
 import useAuth from '../../hooks/useAuth';
 import { DataGrid } from '@mui/x-data-grid'; 
+import Button from '@mui/material/Button';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     var requestOptions = {
@@ -58,6 +62,16 @@ const UserList = () => {
       width: 300,
       editable: false,
 
+  },
+  {
+    field: "chatting",
+    headerName: "Enviar mensaje",
+    width: 300,
+    editable: false,
+    sortable: false,
+    renderCell: (params) => {
+      return <Button onClick={() => navigate('/chat')}>Chat</Button>;
+    }
   }]
   return (
     <section>
