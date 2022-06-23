@@ -19,7 +19,6 @@ const CompareMapPage = lazy(() => import('./pages/compare/compare.page'));
 const ProfilePage = lazy(() => import('./pages/user/profile.page'));
 const AuthProfile = lazy(() => import('./pages/user/AuthProfile'));
 const CheckUser = lazy(() => import('./pages/auth/checkUser'));
-const ChatMenu = lazy(() => import('./pages/chat/menu'));
 const Logout = lazy(() => import('./pages/auth/logout'));
 
 const Chat = lazy(() => import('./pages/chat/show.page'));
@@ -44,7 +43,6 @@ export default function Router() {
             <Route path="/perfil" element={<ProfilePage />} />
             <Route path="/profile" element={<AuthProfile />} />
             <Route path="/check_user" element={<CheckUser />} />
-            <Route path="/chat_menu" element={<ChatMenu />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="*" element={<NotFoundPage />} />
