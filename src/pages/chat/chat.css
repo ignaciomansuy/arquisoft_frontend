@@ -1,5 +1,16 @@
-.Box {
-    display: flex;
+.grid {
+    display: grid;
     align-items: center;
     justify-content: center;
+    grid-gap: 5%;
+    grid-auto-flow: row;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    border-style: solid;
+    border-color: black;
+}
+
+.box {
+    max-width: 50%;
+    padding-left: 25%;
 }
