@@ -8,9 +8,7 @@ import { MessageList, Input, Button } from "react-chat-elements";
 
 export default function ShowChatPage() {
 
-  const [message, setMessage] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [error, setError] = useState('');
 
   const inputReferance = React.createRef();
   const messageListReferance = React.createRef();
