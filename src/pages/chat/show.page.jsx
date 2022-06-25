@@ -1,9 +1,15 @@
 import React, { useState, useEffect, createRef } from 'react';
 import './chat.css'
-import { decodeToken } from "react-jwt";
+import { decodeToken, useJwt } from "react-jwt";
 import "react-chat-elements/dist/main.css";
 import { MessageList, Input, Button } from "react-chat-elements";
 import Modal from 'react-modal';
+import { hashString, hashArray } from 'react-hash-string'
+import { useParams } from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
+import sign from 'jwt-encode'
+
+import useAuth from '../../hooks/useAuth';
 
 const customStyles = {
   content: {
@@ -30,16 +36,82 @@ export default function ShowChatPage() {
   // TODO: set this in .env
   const chat_service_url = "3.223.98.40";
 
+  const { id } = useParams()
+  const { user, getAccessTokenSilently } = useAuth0();
+  const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [auth0Token, setAuth0Token] = useState(null)
+  const [userIdentifier, setUserIdentifier] = useState(null)
+  const domain = "arqui-soft-grupo09.us.auth0.com";
+
+  useEffect(() => {
+    setLoading(true);
+    const getUserMetadata = async () => {
+      try {
+
+        const auth0Token = await getAccessTokenSilently({
+          audience: `https://${domain}/api/v2/`,
+          scope: "read:current_user",
+        });
+        setAuth0Token(auth0Token);
+        setUserIdentifier(decodeToken(auth0Token).sub)
+
+        const userDetailsByIdUrl = `https://${domain}/api/v2/users/${userIdentifier}`;
+
+        const metadataResponse = await fetch(userDetailsByIdUrl, {
+          headers: {
+            Authorization: `Bearer ${auth0Token}`,
+          },
+        });
+        const { user_metadata } = await metadataResponse.json();
+        setUserId(user_metadata.user_id);
+      } catch (e) {
+        console.log("error: ", e.message);
+      }
+    };
+
+    getUserMetadata().then(setLoading(false));
+  }, [getAccessTokenSilently, user?.sub]);
+
+  if (loading) {
+    return (
+      <section className='container'>
+        <h2>Loading...</h2>
+      </section>
+    );
+  }
   // TODO: build this token from scratch using only the user Auth0 uuid (can be find in local storage as auth0Token)
   // see chat_service readme for more info on how to build this token
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwczovL2NoYXQubmFuby5uZXQiLCJpc3MiOiJodHRwczovL2FwaS5uYW5vLm5ldCIsImlhdCI6MTAwMDAwMCwiZXhwIjoyMTQ3NTg3ODM1Nywic3ViIjoiMSIsImVudGl0eVVVSUQiOiJiOWI4M2Q4OS00YmI5LTQwYmYtOWUzYS00MmQ5NzllZGE0ZGIiLCJ1c2VyVVVJRCI6ImE1MmNjNjUzLTIzNTgtNGI4Mi1iZTk0LWY2NWM4NWEyNTVhZiIsImxldmVsT25FbnRpdHkiOjEwMH0.Od_CzP8jkVT7RwcgF9RQYhkAwxQKyAVk2wjhuMi72ao";
+  // const token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwczovL2NoYXQubmFuby5uZXQiLCJpc3MiOiJodHRwczovL2FwaS5uYW5vLm5ldCIsImlhdCI6MTAwMDAwMCwiZXhwIjoyMTQ3NTg3ODM1Nywic3ViIjoiMSIsImVudGl0eVVVSUQiOiJiOWI4M2Q4OS00YmI5LTQwYmYtOWUzYS00MmQ5NzllZGE0ZGIiLCJ1c2VyVVVJRCI6ImE1MmNjNjUzLTIzNTgtNGI4Mi1iZTk0LWY2NWM4NWEyNTVhZiIsImxldmVsT25FbnRpdHkiOjEwMH0.Od_CzP8jkVT7RwcgF9RQYhkAwxQKyAVk2wjhuMi72ao";
+  const secret = 'canelopelao'
+  const data = {
+    "aud": "https://chat.nano.net",
+    "iss": "https://api.nano.net",
+    "iat": 1000000,
+    "exp": 21475878357,
+    "entityUUID": userIdentifier, // For this project, this will be equal to userUUID 
+    "userUUID": userIdentifier,
+    "levelOnEntity": 100
+  };
+  const token = sign(data, secret);
   const myDecodedToken = decodeToken(token);
-  const uuid = myDecodedToken.userUUID;
+  var uuid = myDecodedToken.userUUID;
   const ws_url = `ws://${chat_service_url}/chat`;
   const ws_api_url = `http://${chat_service_url}`;
 
   // TODO: get the room id from ... (not sure how to handle this yet)
-  const room_id = 1;
+
+
+  // console.log(uuid, userId)
+
+  var my_id = userId
+  var other_id = id
+  
+  const hash1 = hashString(String(my_id) + String(other_id))
+  const hash2 = hashString(String(other_id) + String(my_id))
+
+  const room_id = hashArray([hashString(String(my_id) + String(other_id)), hashString(String(other_id) + String(my_id))].sort()); // 1613268271
+
   const [ws, setWs] = useState(new WebSocket(ws_url));
 
   const sendToken = async () => {
@@ -78,7 +150,7 @@ export default function ShowChatPage() {
   }
 
   const analyseMessage = async (message) => {
-    
+
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -101,7 +173,7 @@ export default function ShowChatPage() {
       // const sentiment = response.json()['sessionAttributes']['sentiment']
       const sentiment_message = "This message has a {insert sentiment here} sentiment."
       // openModal(sentiment_message)
-      
+
     }).then((data) => setInitialMessages(data.content));
 
   }
@@ -213,7 +285,7 @@ export default function ShowChatPage() {
           contentLabel="Example Modal"
           style={customStyles}
         >
-          {selectedSentimentMessage && 
+          {selectedSentimentMessage &&
             <h1>{selectedSentimentMessage}</h1>
           }
         </Modal>

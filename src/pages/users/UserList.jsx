@@ -70,7 +70,7 @@ const UserList = () => {
     editable: false,
     sortable: false,
     renderCell: (params) => {
-      return <Button onClick={() => navigate('/chat')}>Chat</Button>;
+      return <Button onClick={() => navigate('/chat/' + params.id)}>Chat</Button>;
     }
   }]
   return (

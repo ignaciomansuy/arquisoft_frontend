@@ -44,7 +44,7 @@ export default function Router() {
             <Route path="/profile" element={<AuthProfile />} />
             <Route path="/check_user" element={<CheckUser />} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat/:id" element={<Chat />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
