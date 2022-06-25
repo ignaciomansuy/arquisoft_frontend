@@ -1,15 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import './chat.css'
 import { decodeToken } from "react-jwt";
 import "react-chat-elements/dist/main.css";
 import { MessageList, Input, Button } from "react-chat-elements";
+import Modal from 'react-modal';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+Modal.setAppElement('#root');
 
 export default function ShowChatPage() {
 
   const [messages, setMessages] = useState([]);
 
-  const inputReferance = React.createRef();
-  const messageListReferance = React.createRef();
+  const inputReferance = createRef();
+  const messageListReferance = createRef();
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [selectedSentimentMessage, setSelectedSentimentMessage] = useState();
 
   // TODO: set this in .env
   const chat_service_url = "3.223.98.40";
@@ -62,6 +78,7 @@ export default function ShowChatPage() {
   }
 
   const analyseMessage = async (message) => {
+    
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -83,9 +100,22 @@ export default function ShowChatPage() {
       // TODO: 
       // const sentiment = response.json()['sessionAttributes']['sentiment']
       const sentiment_message = "This message has a {insert sentiment here} sentiment."
-      console.log(sentiment_message)
+      // openModal(sentiment_message)
+      
     }).then((data) => setInitialMessages(data.content));
 
+  }
+
+  function openModal(sentiment) {
+    setSelectedSentimentMessage(sentiment)
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+  }
+
+  function closeModal() {
+    setIsOpen(false);
   }
 
   let inputClear = () => { inputReferance.current.value = '' };
@@ -176,6 +206,17 @@ export default function ShowChatPage() {
           />
 
         </div>
+        <Modal
+          isOpen={modalIsOpen}
+          onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          contentLabel="Example Modal"
+          style={customStyles}
+        >
+          {selectedSentimentMessage && 
+            <h1>{selectedSentimentMessage}</h1>
+          }
+        </Modal>
       </div>
     </div>
   );
