@@ -1,10 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './chat.css'
-import { decodeToken  } from "react-jwt";
+import { decodeToken } from "react-jwt";
 import "react-chat-elements/dist/main.css";
 import { MessageList, Input, Button } from "react-chat-elements";
-
-
 
 export default function ShowChatPage() {
 
@@ -14,14 +12,14 @@ export default function ShowChatPage() {
   const messageListReferance = React.createRef();
 
   // TODO: set this in .env
-  const chat_service_url = "3.223.98.40"; 
-  
+  const chat_service_url = "3.223.98.40";
+
   // TODO: build this token from scratch using only the user Auth0 uuid (can be find in local storage as auth0Token)
   // see chat_service readme for more info on how to build this token
   const token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwczovL2NoYXQubmFuby5uZXQiLCJpc3MiOiJodHRwczovL2FwaS5uYW5vLm5ldCIsImlhdCI6MTAwMDAwMCwiZXhwIjoyMTQ3NTg3ODM1Nywic3ViIjoiMSIsImVudGl0eVVVSUQiOiJiOWI4M2Q4OS00YmI5LTQwYmYtOWUzYS00MmQ5NzllZGE0ZGIiLCJ1c2VyVVVJRCI6ImE1MmNjNjUzLTIzNTgtNGI4Mi1iZTk0LWY2NWM4NWEyNTVhZiIsImxldmVsT25FbnRpdHkiOjEwMH0.Od_CzP8jkVT7RwcgF9RQYhkAwxQKyAVk2wjhuMi72ao";
   const myDecodedToken = decodeToken(token);
   const uuid = myDecodedToken.userUUID;
-  const ws_url = `ws://${chat_service_url}/chat`; 
+  const ws_url = `ws://${chat_service_url}/chat`;
   const ws_api_url = `http://${chat_service_url}`;
 
   // TODO: get the room id from ... (not sure how to handle this yet)
@@ -29,15 +27,15 @@ export default function ShowChatPage() {
   const [ws, setWs] = useState(new WebSocket(ws_url));
 
   const sendToken = async () => {
-    const message = { 
+    const message = {
       type: "token",
       content: token
     };
     ws.send(JSON.stringify(message));
   }
-  
+
   const selectRoom = async () => {
-    const message = { 
+    const message = {
       type: "select_room",
       room_id: room_id
     };
@@ -47,21 +45,47 @@ export default function ShowChatPage() {
   const getMessages = async () => {
     var requestOptions = {
       method: 'GET',
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
     };
-    
+
     await fetch(`${ws_api_url}/rooms/${room_id}/messages`, requestOptions)
-    .then((response) => {
+      .then((response) => {
+        if (!response.ok) {
+          setError(true);
+          return [];
+        }
+        return response.json();
+      }).then((data) => setInitialMessages(data.content));
+  }
+
+  const analyseMessage = async (message) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: {
+        "currentIntent": {
+          "name": "ChatMessage",
+          "confirmationStatus": "None"
+        },
+        "inputTranscript": message.text
+      }
+    };
+    await fetch("https://k22ok5vv55.execute-api.us-east-1.amazonaws.com/index/chat/sentiment_analysis", requestOptions).then((response) => {
       if (!response.ok) {
         setError(true);
         return [];
       }
-      return response.json();
-    })
-    .then((data)  => setInitialMessages(data.content));
+      // TODO: 
+      // const sentiment = response.json()['sessionAttributes']['sentiment']
+      const sentiment_message = "This message has a {insert sentiment here} sentiment."
+      console.log(sentiment_message)
+    }).then((data) => setInitialMessages(data.content));
+
   }
 
   let inputClear = () => { inputReferance.current.value = '' };
@@ -109,7 +133,7 @@ export default function ShowChatPage() {
         const message_data = JSON.parse(data.data);
         handleMessage(message_data.data);
       }
-      else{
+      else {
         console.log(e);
       }
     }
@@ -132,7 +156,8 @@ export default function ShowChatPage() {
             className='message-list'
             lockable={true}
             toBottomHeight={'100%'}
-            dataSource={messages.sort(sortByDate)} />
+            dataSource={messages.sort(sortByDate)}
+            onClick={(message) => analyseMessage(message)} />
         </div>
         <div>
           <Input
