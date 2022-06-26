@@ -8,11 +8,17 @@ import SendIcon from '@mui/icons-material/Send';
 import { DataGrid } from '@mui/x-data-grid';
 import Loading from '../../components/ui/loading.component';
 import Hero from '../../components/layout/hero.component';
+import ws_api_url from '../chat/show.page';
+import { decodeToken, useJwt } from "react-jwt";
+import sign from 'jwt-encode';
+import { hashString, hashArray } from 'react-hash-string';
+
 
 export default function sendPings() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [UUID, setUUID] = useState();
   const { currentUser } = useAuth();
 
   // URL to index calculation service
@@ -73,8 +79,43 @@ export default function sendPings() {
     .catch((error) =>  console.log(error));
   }
 
+
+  const createRoom = async (sender_id, receiver_id) => {
+    const secret = 'canelopelao'
+    const data = {
+      "aud": "https://chat.nano.net",
+      "iss": "https://api.nano.net",
+      "iat": 1000000,
+      "exp": 21475878357,
+      "entityUUID": UUID, // For this project, this will be equal to userUUID 
+      "userUUID": UUID,
+      "levelOnEntity": 100
+    };
+    const token = sign(data, secret);   
+    const room_id = hashArray([hashString(String(sender_id) + String(receiver_id)), hashString(String(receiver_id) + String(sender_id))].sort());
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: {
+        'name': `chat between user: ${sender_id} and user: ${receiver_id} `,
+        'level_admin': 100,
+        'type': 'group',
+        'id': room_id, 
+      }
+    };
+    await fetch(`${ws_api_url}/rooms`, requestOptions)
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => console.log(err))
+  }
+
   function makePing(receiver_id) {
     setLoading(true);
+    setUUID(decodeToken(localStorage.auth0Token).sub)
     const info = {
       sender_user_id: currentUser.data.id,
       receiver_user_id: receiver_id,
@@ -95,6 +136,7 @@ export default function sendPings() {
           setError(true);
           return [];
         }
+        createRoom(info.sender_user_id, receiver_id)
         create_index_result(pingData.data.id);
         calculate_indexes(info.sender_user_id, receiver_id, pingData.data.id);
         window.location.reload(false);

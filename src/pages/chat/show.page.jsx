@@ -24,6 +24,10 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
+const chat_service_url = "3.223.98.40";
+const ws_url = `ws://${chat_service_url}/chat`;
+export const ws_api_url = `http://${chat_service_url}`;
+
 export default function ShowChatPage() {
 
   const [messages, setMessages] = useState([]);
@@ -34,8 +38,6 @@ export default function ShowChatPage() {
   const [selectedSentimentMessage, setSelectedSentimentMessage] = useState();
 
   // TODO: set this in .env
-  const chat_service_url = "3.223.98.40";
-
   const { id } = useParams()
   const { user, getAccessTokenSilently } = useAuth0();
   const [userId, setUserId] = useState(null);
@@ -96,8 +98,7 @@ export default function ShowChatPage() {
   const token = sign(data, secret);
   const myDecodedToken = decodeToken(token);
   var uuid = myDecodedToken.userUUID;
-  const ws_url = `ws://${chat_service_url}/chat`;
-  const ws_api_url = `http://${chat_service_url}`;
+
 
   // TODO: get the room id from ... (not sure how to handle this yet)
 
@@ -114,6 +115,13 @@ export default function ShowChatPage() {
 
   const [ws, setWs] = useState(new WebSocket(ws_url));
 
+  useEffect(() => {
+    if (userIdentifier && room_id) {
+      // GET rooms para ver si existe 
+      createRoom(token)
+    }
+  }, [userIdentifier, room_id]);
+
   const sendToken = async () => {
     const message = {
       type: "token",
@@ -123,6 +131,7 @@ export default function ShowChatPage() {
   }
 
   const selectRoom = async () => {
+    console.log(room_id)
     const message = {
       type: "select_room",
       room_id: room_id
