@@ -8,10 +8,11 @@ import SendIcon from '@mui/icons-material/Send';
 import { DataGrid } from '@mui/x-data-grid';
 import Loading from '../../components/ui/loading.component';
 import Hero from '../../components/layout/hero.component';
-import ws_api_url from '../chat/show.page';
 import { decodeToken, useJwt } from "react-jwt";
 import sign from 'jwt-encode';
 import { hashString, hashArray } from 'react-hash-string';
+
+const ws_api_url = `http://localhost:7777`;
 
 
 export default function sendPings() {
