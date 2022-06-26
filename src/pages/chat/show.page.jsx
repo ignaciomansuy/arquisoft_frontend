@@ -117,13 +117,6 @@ export default function ShowChatPage() {
 
   const [ws, setWs] = useState(new WebSocket(ws_url));
 
-  useEffect(() => {
-    if (userIdentifier && room_id) {
-      // GET rooms para ver si existe 
-      createRoom(token)
-    }
-  }, [userIdentifier, room_id]);
-
   const sendToken = async () => {
     const message = {
       type: "token",

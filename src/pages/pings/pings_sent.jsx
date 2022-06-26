@@ -19,7 +19,6 @@ export default function sendPings() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [UUID, setUUID] = useState();
   const { currentUser } = useAuth();
 
   // URL to index calculation service
@@ -29,7 +28,7 @@ export default function sendPings() {
     var requestOptions = {
       method: 'GET',
     };
-
+    console.log(currentUser)
     setLoading(true);
     fetch(`${config.API_URL}/user/index`, requestOptions)
       .then((response) => {
@@ -82,7 +81,9 @@ export default function sendPings() {
 
 
   const createRoom = async (sender_id, receiver_id) => {
-    const secret = 'canelopelao'
+    const UUID = (decodeToken(localStorage.auth0Token).sub)
+    console.log(UUID)
+    const secret = 'NOTASECRETANYMORE'
     const data = {
       "aud": "https://chat.nano.net",
       "iss": "https://api.nano.net",
@@ -94,18 +95,19 @@ export default function sendPings() {
     };
     const token = sign(data, secret);   
     const room_id = hashArray([hashString(String(sender_id) + String(receiver_id)), hashString(String(receiver_id) + String(sender_id))].sort());
+    const data_body = {
+      name: `chat between user: ${sender_id} and user: ${receiver_id} `,
+      level_admin: 100,
+      type: 'group',
+      id: room_id, 
+    }
     const requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: {
-        'name': `chat between user: ${sender_id} and user: ${receiver_id} `,
-        'level_admin': 100,
-        'type': 'group',
-        'id': room_id, 
-      }
+      body: JSON.stringify(data_body),
     };
     await fetch(`${ws_api_url}/rooms`, requestOptions)
     .then(res => {
@@ -116,7 +118,6 @@ export default function sendPings() {
 
   function makePing(receiver_id) {
     setLoading(true);
-    setUUID(decodeToken(localStorage.auth0Token).sub)
     const info = {
       sender_user_id: currentUser.data.id,
       receiver_user_id: receiver_id,
