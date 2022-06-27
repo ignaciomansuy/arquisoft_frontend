@@ -62,16 +62,6 @@ const UserList = () => {
       width: 300,
       editable: false,
 
-  },
-  {
-    field: "chatting",
-    headerName: "Enviar mensaje",
-    width: 300,
-    editable: false,
-    sortable: false,
-    renderCell: (params) => {
-      return <Button onClick={() => navigate('/chat/' + params.id)}>Chat</Button>;
-    }
   }]
   return (
     <section>

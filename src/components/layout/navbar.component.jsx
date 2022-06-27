@@ -90,12 +90,6 @@ export default function Navbar() {
                 >
                   Perfil
                 </Button>
-                <Button
-                  color="inherit"
-                  onClick={() => navigate('/chat_menu')}
-                >
-                  Chats
-                </Button>
                 <LogoutButton />
               </Box>
             </>
