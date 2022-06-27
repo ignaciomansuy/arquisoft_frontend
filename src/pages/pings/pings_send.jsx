@@ -130,7 +130,7 @@ export default function pingsSend() {
   }
 
   function goToChat(other_user_id) {
-    navigate('/chat', {
+    navigate('/chat/' + other_user_id, {
       state: { other_user_id: other_user_id },
     });
   }

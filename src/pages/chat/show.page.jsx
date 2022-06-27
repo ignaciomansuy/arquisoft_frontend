@@ -38,98 +38,32 @@ export default function ShowChatPage() {
   const messageListReferance = createRef();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selectedSentimentMessage, setSelectedSentimentMessage] = useState();
+  const [roomId, setRoomId] = useState();
+  const [chatToken, setChatToken] = useState();
+  const [uuid, setUUID] = useState()
 
   // TODO: set this in .env
   const { id } = useParams()
   const { user, getAccessTokenSilently } = useAuth0();
-  const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [auth0Token, setAuth0Token] = useState(null)
-  const [userIdentifier, setUserIdentifier] = useState(null)
   const domain = "arqui-soft-grupo09.us.auth0.com";
-
-  useEffect(() => {
-    setLoading(true);
-    const getUserMetadata = async () => {
-      try {
-
-        const auth0Token = await getAccessTokenSilently({
-          audience: `https://${domain}/api/v2/`,
-          scope: "read:current_user",
-        });
-        setAuth0Token(auth0Token);
-        setUserIdentifier(decodeToken(auth0Token).sub)
-
-        const userDetailsByIdUrl = `https://${domain}/api/v2/users/${userIdentifier}`;
-
-        const metadataResponse = await fetch(userDetailsByIdUrl, {
-          headers: {
-            Authorization: `Bearer ${auth0Token}`,
-          },
-        });
-        const { user_metadata } = await metadataResponse.json();
-        setUserId(user_metadata.user_id);
-      } catch (e) {
-        console.log("error: ", e.message);
-      }
-    };
-
-    getUserMetadata().then(setLoading(false));
-  }, [getAccessTokenSilently, user?.sub]);
-
-  if (loading) {
-    return (
-      <section className='container'>
-        <h2>Loading...</h2>
-      </section>
-    );
-  }
-  // TODO: build this token from scratch using only the user Auth0 uuid (can be find in local storage as auth0Token)
-  // see chat_service readme for more info on how to build this token
-  // const token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwczovL2NoYXQubmFuby5uZXQiLCJpc3MiOiJodHRwczovL2FwaS5uYW5vLm5ldCIsImlhdCI6MTAwMDAwMCwiZXhwIjoyMTQ3NTg3ODM1Nywic3ViIjoiMSIsImVudGl0eVVVSUQiOiJiOWI4M2Q4OS00YmI5LTQwYmYtOWUzYS00MmQ5NzllZGE0ZGIiLCJ1c2VyVVVJRCI6ImE1MmNjNjUzLTIzNTgtNGI4Mi1iZTk0LWY2NWM4NWEyNTVhZiIsImxldmVsT25FbnRpdHkiOjEwMH0.Od_CzP8jkVT7RwcgF9RQYhkAwxQKyAVk2wjhuMi72ao";
-  const secret = 'canelopelao'
-  const data = {
-    "aud": "https://chat.nano.net",
-    "iss": "https://api.nano.net",
-    "iat": 1000000,
-    "exp": 21475878357,
-    "entityUUID": userIdentifier, // For this project, this will be equal to userUUID 
-    "userUUID": userIdentifier,
-    "levelOnEntity": 100
-  };
-  const token = sign(data, secret);
-  const myDecodedToken = decodeToken(token);
-  var uuid = myDecodedToken.userUUID;
-
-
-  // TODO: get the room id from ... (not sure how to handle this yet)
-
-
-  // console.log(uuid, userId)
-
-  var my_id = userId
-  var other_id = id
-  
-  const hash1 = hashString(String(my_id) + String(other_id))
-  const hash2 = hashString(String(other_id) + String(my_id))
-
-  const room_id = hashArray([hashString(String(my_id) + String(other_id)), hashString(String(other_id) + String(my_id))].sort()); // 1613268271
-
+  const { currentUser } = useAuth();
   const [ws, setWs] = useState(new WebSocket(ws_url));
 
   const sendToken = async () => {
+    console.log(chatToken)
     const message = {
       type: "token",
-      content: token
+      content: chatToken
     };
     ws.send(JSON.stringify(message));
   }
 
   const selectRoom = async () => {
-    console.log(room_id)
+    console.log(roomId)
     const message = {
       type: "select_room",
-      room_id: room_id
+      room_id: roomId
     };
     ws.send(JSON.stringify(message));
   }
@@ -139,11 +73,11 @@ export default function ShowChatPage() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${chatToken}`
       },
     };
 
-    await fetch(`${ws_api_url}/rooms/${room_id}/messages`, requestOptions)
+    await fetch(`${ws_api_url}/rooms/${roomId}/messages`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           setError(true);
@@ -228,6 +162,27 @@ export default function ShowChatPage() {
   }
 
   useEffect(() => {
+
+    // build room id
+    const sender_id = currentUser.data.id;
+    const receiver_id = id;
+    setRoomId(hashArray([hashString(String(sender_id) + '-' + String(receiver_id)), hashString(String(receiver_id) + '-' +String(sender_id))].sort()));
+
+    setUUID(currentUser.data.attributes.uuid);
+    
+    // build token
+    const secret = 'NOTASECRETANYMORE'
+    const data = {
+      "aud": "https://chat.nano.net",
+      "iss": "https://api.nano.net",
+      "iat": 1000000,
+      "exp": 21475878357,
+      "entityUUID": currentUser.data.attributes.uuid, // For this project, this will be equal to userUUID 
+      "userUUID": currentUser.data.attributes.uuid,
+      "levelOnEntity": 100
+    };
+    setChatToken(sign(data, secret));   
+
     ws.onopen = async () => {
       await sendToken();
       await selectRoom();
@@ -255,6 +210,7 @@ export default function ShowChatPage() {
 
   return (
     <div className='box'>
+      <h1>Chat con usuario {id}</h1>
       <div className='grid'>
         <div>
           <MessageList
