@@ -105,8 +105,9 @@ export default function sendPings() {
       "userUUID": currentUser.data.attributes.uuid,
       "levelOnEntity": 100
     };
-    const token = sign(data, secret);   
-    const room_id = hashArray([hashString(String(sender_id) + '-' + String(receiver_id)), hashString(String(receiver_id) + '-' +String(sender_id))].sort());
+    const token = sign(data, secret);
+    // console.log(Math.abs([hashString(String(sender_id) + '-' + String(receiver_id)), hashString(String(receiver_id) + '-' +String(sender_id))].sort()));
+    const room_id = Math.abs(hashArray([hashString(String(sender_id) + '-' + String(receiver_id)), hashString(String(receiver_id) + '-' +String(sender_id))].sort()));
     const data_body = {
       name: `chat between user: ${sender_id} and user: ${receiver_id} `,
       level_admin: 100,
