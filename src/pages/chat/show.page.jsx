@@ -27,7 +27,7 @@ Modal.setAppElement("#root");
 const chat_service_url = "3.223.98.40";
 // const chat_service_url = "localhost:7777";
 
-const ws_url = `ws://${chat_service_url}/chat`;
+const ws_url = `wss://${chat_service_url}/chat`;
 export const ws_api_url = `http://${chat_service_url}`;
 
 export default function ShowChatPage() {
