@@ -41,7 +41,7 @@ const validationSchema = Yup.object({
   ),
 });
 export default function SignUpPage() {
-  const { currentUser, handleUserLogin, accessToken, saveAccessToken } = useAuth();
+  const { currentUser, handleUserLogin, auth0Token, saveAccessToken } = useAuth();
   const [message, setMessage] = useState('');
   const { user, getAccessTokenSilently } = useAuth0();
   const [loading, setLoading] = useState(false);
@@ -79,7 +79,7 @@ export default function SignUpPage() {
               method: 'POST',
               headers: { 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`,
+                'Authorization': `Bearer ${auth0Token}`,
               },
               body: JSON.stringify(values),
             };
@@ -94,7 +94,7 @@ export default function SignUpPage() {
               }
               const backendUser = await response.json();
               var urls = await uploadFilesFunction(backendUser.data.id);
-              const newToken = await loginUser(accessToken, saveAccessToken);
+              const newToken = await loginUser(auth0Token, saveAccessToken);
               await useSendImagesUrl(urls, backendUser.data.id, setMessage, newToken);
               const user_with_photos = await getUser(backendUser.data.id);
               handleUserLogin(user_with_photos);

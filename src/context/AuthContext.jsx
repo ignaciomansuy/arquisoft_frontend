@@ -10,6 +10,8 @@ const AuthContextProvider = (props) => {
   const { children } = props;
   const [currentUser, storeUser, clearStoredUser] = useLocalStorage('user');
   const [accessToken, storeAccessToken, clearStoredAccessToken] = useLocalStorage('accessToken');
+  const [auth0Token, storeAuth0Token, clearStoredAuth0Token] = useLocalStorage('auth0Token');
+
 
   const handleUserLogin = (user) => {
     storeUser(user);
@@ -19,19 +21,25 @@ const AuthContextProvider = (props) => {
     storeAccessToken(token);
   };
 
+  const saveAuth0Token = (token) => {
+    storeAuth0Token(token);
+  };
+
   const handleUserLogout = () => {
     clearStoredUser();
     clearStoredAccessToken();
+    clearStoredAuth0Token();
   };
 
 
   useEffect(() => {
-  }, [currentUser, accessToken]);
+  }, [currentUser, accessToken, auth0Token]);
 
   return (
     <AuthContext.Provider value={{
       currentUser, handleUserLogin, handleUserLogout,
       accessToken, saveAccessToken,
+      auth0Token, saveAuth0Token,
     }}
     >
       {children}

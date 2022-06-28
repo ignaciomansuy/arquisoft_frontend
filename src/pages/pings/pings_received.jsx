@@ -15,6 +15,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Hero from '../../components/layout/hero.component';
 import config from '../../config';
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -41,6 +42,7 @@ export default function PingsReceived() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   function acceptPing(ping_id) {
     setLoading(true);
@@ -175,7 +177,7 @@ export default function PingsReceived() {
                   <StyledTableCell component="th" scope="row">
                     {ping.senderUserId}
                   </StyledTableCell>
-                  <StyledTableCell align="right">Lo aprobaste</StyledTableCell>
+                  <StyledTableCell align="right"><Button onClick={() => navigate('/chat/' + ping.senderUserId)}>Chat</Button></StyledTableCell>
                 </StyledTableRow>
               ) : (
                 <StyledTableRow key={ping.id}>

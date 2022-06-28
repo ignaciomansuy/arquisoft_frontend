@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Deserializer } from 'jsonapi-serializer';
 import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 import {
   Paper,
   Typography,
@@ -86,6 +87,7 @@ export default function pingsSend() {
   const [sidi, setSidi] = useState();
   const [siin, setSiin] = useState();
   const [dindin, setDindin] = useState();
+  const navigate = useNavigate();
   // const [lastUpdate, setlastUpdated] = useState();
 
   function openModal(ping_id) {
@@ -125,6 +127,12 @@ export default function pingsSend() {
 
   function closeModal() {
     setIsOpen(false);
+  }
+
+  function goToChat(other_user_id) {
+    navigate('/chat/' + other_user_id, {
+      state: { other_user_id: other_user_id },
+    });
   }
 
   return (
@@ -185,7 +193,13 @@ export default function pingsSend() {
                   <StyledTableCell align="right">No respondido</StyledTableCell>
                 ) : (
                   ping.approved ? (
-                  <StyledTableCell align="right">Aprobado</StyledTableCell>
+                  <StyledTableCell align="right">                  
+                  <Button
+                  onClick={() => goToChat(ping.receiverUserId)}
+                  variant="contained"
+                  >Chatear</Button>
+                  </StyledTableCell>
+
                   ) : (
                     <StyledTableCell align="right">Rechazado</StyledTableCell>
                     )

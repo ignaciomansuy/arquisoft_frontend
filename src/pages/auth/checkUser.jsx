@@ -7,7 +7,7 @@ import loginUser from '../../hooks/auth/loginUser';
 
 const CheckUser= () => {
   const navigate = useNavigate();
-  const { handleUserLogin, saveAccessToken } = useAuth();
+  const { handleUserLogin, saveAccessToken, saveAuth0Token } = useAuth();
   const { user, getAccessTokenSilently } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -18,17 +18,17 @@ const CheckUser= () => {
     const getUserMetadata = async () => {
       try {
 
-        const accessToken = await getAccessTokenSilently({
+        const auth0Token = await getAccessTokenSilently({
           audience: `https://${domain}/api/v2/`,
           scope: "read:current_user",
         });
-        saveAccessToken(accessToken);
+        saveAuth0Token(auth0Token);
   
         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
   
         const metadataResponse = await fetch(userDetailsByIdUrl, {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${auth0Token}`,
           },
         });
   
@@ -37,7 +37,7 @@ const CheckUser= () => {
         setUserMetadata(user_metadata);
         if (user_metadata && user_metadata.user_id) {
           useSetUserLocal(user_metadata.user_id, handleUserLogin)
-          .then(() => loginUser(accessToken, saveAccessToken))
+          .then(() => loginUser(auth0Token, saveAccessToken))
           .then(() => navigate('/'));
         }
         else{
