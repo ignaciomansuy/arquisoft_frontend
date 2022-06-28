@@ -12,7 +12,7 @@ import { decodeToken, useJwt } from "react-jwt";
 import sign from 'jwt-encode';
 import { hashString, hashArray } from 'react-hash-string';
 
-const ws_api_url = `http://localhost:7777`;
+const ws_api_url = `http://3.223.98.40`;
 
 
 export default function sendPings() {
