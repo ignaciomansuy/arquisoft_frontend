@@ -164,7 +164,7 @@ export default function pingsSend() {
                   {ping.receiverUserId}
                 </StyledTableCell>
                 <StyledTableCell>
-                  <Button onClick={() => openModal(ping.id)}>Ver indices</Button>
+                  <Button onClick={() => openModal(ping.id)} class=''>Ver indices</Button>
                   <Modal
                     isOpen={modalIsOpen}
                     onAfterOpen={afterOpenModal}
